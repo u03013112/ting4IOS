@@ -1,0 +1,135 @@
+//
+//  AlbumVC.m
+//  ttt
+//
+//  Created by 宋志京 on 2019/6/8.
+//  Copyright © 2019 宋志京. All rights reserved.
+//
+
+#import "AlbumVC.h"
+#import "AlbumData.h"
+#import "SongCell.h"
+#import "../AppDelegate.h"
+#import <AVFoundation/AVFoundation.h>
+
+@interface AlbumVC ()
+//
+@property (weak, nonatomic) IBOutlet UILabel *jStartLabel;
+@property (weak, nonatomic) IBOutlet UILabel *jEndLabel;
+@property (weak, nonatomic) IBOutlet UISlider *jStartSlider;
+@property (weak, nonatomic) IBOutlet UISlider *jEndSlider;
+@property (weak, nonatomic) IBOutlet UILabel *rateLabel;
+@property (weak, nonatomic) IBOutlet UISlider *rateSlider;
+@property (weak, nonatomic) IBOutlet UITableView *songArrayTV;
+@property (weak, nonatomic) IBOutlet UILabel *lastPlayLabel;
+@property (weak, nonatomic) IBOutlet UIButton *playButton;
+@end
+
+@implementation AlbumVC
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+//    [self jStartLabel].text=[NSString stringWithFormat:@"%ds",[self albumInfo]->jSecondStart];
+//    [self jEndLabel].text=[NSString stringWithFormat:@"%ds",[self albumInfo]->jSecondEnd];
+    
+    [[self songArrayTV]setDataSource:self];
+    [[self songArrayTV]setDelegate:self];
+    UsrData *usrData = [AppDelegate getInstance].usrData;
+    long aIndex = [self albumIndex];
+    if ([[usrData getAlbumData:aIndex] currentSongIndex] <= 0){
+        self.lastPlayLabel.text=@"开始收听吧！";
+    }else{
+        self.lastPlayLabel.text=[NSString stringWithFormat:@"上次听到%ld了",[[usrData getAlbumData:aIndex] currentSongIndex]+1];
+        [self.playButton setTitle:@"继续收听" forState:UIControlStateNormal];
+        [[self songArrayTV]setContentOffset:CGPointMake(0, [[usrData getAlbumData:aIndex] currentSongIndex]*43.5)];
+    }
+    
+    UsrDataWithAlbum *uda = [usrData getAlbumData:[self albumIndex]];
+    
+    [[self jStartSlider]setValue:[uda startSeekSec]];
+    [self jStartLabel].text = [NSString stringWithFormat:@"%lds",[uda startSeekSec]];
+    [[self jEndSlider]setValue:[uda endSeekSec]];
+    [self jEndLabel].text = [NSString stringWithFormat:@"%lds",[uda endSeekSec]];
+    [[self rateSlider]setValue:[uda rate]];
+    [self rateLabel].text = [NSString stringWithFormat:@"%.2fx",[uda rate]];
+}
+
+- (IBAction)didBackButtonClicked:(id)sender {
+    NSLog(@"didBackButtonClicked");
+    [self dismissViewControllerAnimated:YES completion:^{
+        //
+    }];
+}
+
+- (IBAction)didSlider1Changed:(id)sender {
+    [self jStartLabel].text = [NSString stringWithFormat:@"%.0fs",[[self jStartSlider] value]];
+}
+
+- (IBAction)didSlider2Changed:(id)sender {
+    [self jEndLabel].text = [NSString stringWithFormat:@"%.0fs",[[self jEndSlider] value]];
+}
+- (IBAction)didSlider3Changed:(id)sender {
+    [self rateLabel].text = [NSString stringWithFormat:@"%.2fx",[[self rateSlider] value]];
+}
+
+- (IBAction)didSlider1OK:(id)sender {
+    [[[AppDelegate getInstance] usrData] getAlbumData:[self albumIndex]].startSeekSec = [[self jStartSlider] value];
+    [[[AppDelegate getInstance] usrData] saveUsrData];
+}
+- (IBAction)didSlider2OK:(id)sender {
+    [[[AppDelegate getInstance] usrData] getAlbumData:[self albumIndex]].endSeekSec = [[self jEndSlider] value];
+    [[[AppDelegate getInstance] usrData] saveUsrData];
+}
+- (IBAction)didSlider3OK:(id)sender {
+    [[[AppDelegate getInstance] usrData] getAlbumData:[self albumIndex]].rate = [[self rateSlider] value];
+    [[[AppDelegate getInstance] usrData] saveUsrData];
+}
+
+
+- (IBAction)didPlayButtonClicked:(id)sender {
+    UsrData *usrData = [AppDelegate getInstance].usrData;
+    usrData.currentAlbumIndex = self.albumIndex;
+    [[AppDelegate getInstance].player play];
+    [[self songArrayTV]reloadData];
+}
+
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    UsrData *usrData = [AppDelegate getInstance].usrData;
+    AlbumInfo *info = [[AlbumData getInstance] AlbumArray][self.albumIndex];
+    if(info!=nil){
+        SongCell *cell = [self.songArrayTV dequeueReusableCellWithIdentifier:@"SongCell"];
+        SongInfo *sinfo = info->songInfoArray[indexPath.row];
+        cell.songLabel.text = sinfo->name;
+        cell.statusLabel.text = @"";
+        if ([usrData getAlbumData:self.albumIndex].currentSongIndex==indexPath.row){
+            if([[AppDelegate getInstance].player isPlaying]== YES){
+                cell.statusLabel.text = @"正在播放";
+            }else{
+                cell.statusLabel.text = @"上次播放";
+            }
+            
+        }
+        return cell;
+    }
+    return nil;
+}
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    AlbumInfo *info = [[AlbumData getInstance] AlbumArray][self.albumIndex];
+    if(info!=nil){
+        return [info->songInfoArray count];
+    }
+    return 0;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    UsrData *usrData = [AppDelegate getInstance].usrData;
+    usrData.currentAlbumIndex = self.albumIndex;
+    [usrData getAlbumData:self.albumIndex].currentSongIndex = indexPath.row;
+    [[AppDelegate getInstance].player play];
+    [[self songArrayTV]reloadData];
+}
+
+@end
