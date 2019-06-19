@@ -85,22 +85,19 @@
 }
 
 - (IBAction)didSlider1OK:(id)sender {
-    [[[AppDelegate getInstance] usrData] getAlbumData:[self albumIndex]].startSeekSec = [[self jStartSlider] value];
-    [[[AppDelegate getInstance] usrData] saveUsrData];
+    [[AppDelegate getInstance].usrData setCurrentStartSeekSec:self.jStartSlider.value];
 }
 - (IBAction)didSlider2OK:(id)sender {
-    [[[AppDelegate getInstance] usrData] getAlbumData:[self albumIndex]].endSeekSec = [[self jEndSlider] value];
-    [[[AppDelegate getInstance] usrData] saveUsrData];
+    [[AppDelegate getInstance].usrData setCurrentEndSeekSec:self.jEndSlider.value];
 }
 - (IBAction)didSlider3OK:(id)sender {
-    [[[AppDelegate getInstance] usrData] getAlbumData:[self albumIndex]].rate = [[self rateSlider] value];
-    [[[AppDelegate getInstance] usrData] saveUsrData];
+    [[AppDelegate getInstance].usrData setCurrentRate:self.rateSlider.value];
 }
 
 
 - (IBAction)didPlayButtonClicked:(id)sender {
     UsrData *usrData = [AppDelegate getInstance].usrData;
-    usrData.currentAlbumIndex = self.albumIndex;
+    usrData.currentAlbumURL = self.url;
     [[AppDelegate getInstance].player play];
     [[self songArrayTV]reloadData];
 }
@@ -111,10 +108,12 @@
         NSDictionary *dict =[[self albumData]sounds][indexPath.row];
         cell.songLabel.text = [dict objectForKey:@"title"];
         cell.statusLabel.text = @"";
-        if([[AppDelegate getInstance].player isPlaying]== YES){
-            cell.statusLabel.text = @"正在播放";
-        }else{
-            cell.statusLabel.text = @"上次播放";
+        if ([[AppDelegate getInstance].usrData getCurrentSongIndex]==indexPath.row){
+            if([[AppDelegate getInstance].player isPlaying]== YES){
+                cell.statusLabel.text = @"正在播放";
+            }else{
+                cell.statusLabel.text = @"上次播放";
+            }
         }
         return  cell;
     }
@@ -130,8 +129,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     UsrData *usrData = [AppDelegate getInstance].usrData;
-    usrData.currentAlbumIndex = self.albumIndex;
-    [usrData getAlbumData:self.albumIndex].currentSongIndex = indexPath.row;
+    usrData.currentAlbumURL = self.url;
+    [usrData setCurrentSongIndex:indexPath.row];
     [[AppDelegate getInstance].player play];
     [[self songArrayTV]reloadData];
 }

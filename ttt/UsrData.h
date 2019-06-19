@@ -9,38 +9,30 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-
-@interface UsrDataWithAlbum : NSObject
-
-@property long albumIndex;
-@property long currentSongIndex;
-
-@property long startSeekSec;
-@property long endSeekSec;
-@property long currentSeekSec;
-
-@property float rate;
-
-@end
-
 @interface UsrData : NSObject
 
 @property (strong,nonatomic) NSString *name;
+@property (strong,nonatomic) NSString *currentAlbumURL;
+@property (strong,nonatomic) NSString *mod;
 
-@property long currentAlbumIndex;
-
-@property (strong,nonatomic) NSMutableDictionary *albumData;//基于专辑的用户配置
+@property (strong,nonatomic) NSMutableDictionary *albumConfig;//基于专辑的用户配置
 
 -(void)loadUsrData;
 -(void)saveUsrData;
 
--(UsrDataWithAlbum*)getAlbumData:(long) albumIndex;
+-(NSDictionary*)getAlbumConfig:(NSString*)url;//use url for key
 
 -(long)getCurrentStartSeekSec;
 -(long)getCurrentEndSeekSec;
 -(float)getCurrentRate;
--(float)getCurrentSeekSec;
--(void)setCurrentSeekSec:(float)c;
+-(long)getCurrentSeekSec;
+-(long)getCurrentSongIndex;
+
+-(void)setCurrentStartSeekSec:(long)s;
+-(void)setCurrentEndSeekSec:(long)s;
+-(void)setCurrentRate:(float)r;
+-(void)setCurrentSeekSec:(long)s;
+-(void)setCurrentSongIndex:(long)i;
 @end
 
 NS_ASSUME_NONNULL_END
