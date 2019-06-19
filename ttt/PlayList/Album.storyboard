@@ -33,6 +33,13 @@
                                                 </connections>
                                             </button>
                                         </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" style="plain" id="6ZS-8d-gOy">
+                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="hSi-t3-Dxf">
+                                                <rect key="frame" x="302" y="7" width="92" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="收藏"/>
+                                            </button>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>

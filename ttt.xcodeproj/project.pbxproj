@@ -15,8 +15,6 @@
 		A7269F7A22A90A8F00E33D93 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A7269F7922A90A8F00E33D93 /* main.m */; };
 		A72FE34122B5517200AB44F9 /* ScheduleCV.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FE34022B5517200AB44F9 /* ScheduleCV.m */; };
 		A78B9D4C22A981A300DA73D7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A78B9D4B22A981A300DA73D7 /* AVFoundation.framework */; };
-		A78B9D7B22AAF19300DA73D7 /* PlayListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A78B9D7A22AAF19300DA73D7 /* PlayListCell.m */; };
-		A78B9D7F22AAF32600DA73D7 /* PlayListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A78B9D7E22AAF32600DA73D7 /* PlayListVC.m */; };
 		A78B9D8122AAF59100DA73D7 /* AlbumData.m in Sources */ = {isa = PBXBuildFile; fileRef = A78B9D8022AAF59100DA73D7 /* AlbumData.m */; };
 		A78B9D8422AC0CFC00DA73D7 /* Album.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A78B9D8322AC0CFC00DA73D7 /* Album.storyboard */; };
 		A78B9D8722AC0F9900DA73D7 /* AlbumVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A78B9D8622AC0F9900DA73D7 /* AlbumVC.m */; };
@@ -26,8 +24,9 @@
 		A78B9D9422ACEF7600DA73D7 /* PlayerData.m in Sources */ = {isa = PBXBuildFile; fileRef = A78B9D9322ACEF7600DA73D7 /* PlayerData.m */; };
 		A78B9D9622ACF98D00DA73D7 /* Player.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A78B9D9522ACF98D00DA73D7 /* Player.storyboard */; };
 		A78B9D9922AD5F1B00DA73D7 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A78B9D9822AD5F1B00DA73D7 /* MediaPlayer.framework */; };
-		A78FF19522B229B90060FDED /* new.json in Resources */ = {isa = PBXBuildFile; fileRef = A78FF19422B229B90060FDED /* new.json */; };
 		A7D4CD4A22AE7C44004BBCA8 /* UsrData.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D4CD4922AE7C44004BBCA8 /* UsrData.m */; };
+		A7FE94EB22BA3FA200857FB9 /* SearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FE94EA22BA3FA200857FB9 /* SearchVC.m */; };
+		A7FE94EE22BA4AFB00857FB9 /* SearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FE94ED22BA4AFB00857FB9 /* SearchCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,10 +43,6 @@
 		A72FE33F22B5517200AB44F9 /* ScheduleCV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScheduleCV.h; sourceTree = "<group>"; };
 		A72FE34022B5517200AB44F9 /* ScheduleCV.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScheduleCV.m; sourceTree = "<group>"; };
 		A78B9D4B22A981A300DA73D7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		A78B9D7922AAF19300DA73D7 /* PlayListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayListCell.h; sourceTree = "<group>"; };
-		A78B9D7A22AAF19300DA73D7 /* PlayListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayListCell.m; sourceTree = "<group>"; };
-		A78B9D7D22AAF32600DA73D7 /* PlayListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayListVC.h; sourceTree = "<group>"; };
-		A78B9D7E22AAF32600DA73D7 /* PlayListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayListVC.m; sourceTree = "<group>"; };
 		A78B9D8022AAF59100DA73D7 /* AlbumData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlbumData.m; sourceTree = "<group>"; };
 		A78B9D8222AAF5A600DA73D7 /* AlbumData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlbumData.h; sourceTree = "<group>"; };
 		A78B9D8322AC0CFC00DA73D7 /* Album.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Album.storyboard; sourceTree = "<group>"; };
@@ -63,9 +58,12 @@
 		A78B9D9322ACEF7600DA73D7 /* PlayerData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerData.m; sourceTree = "<group>"; };
 		A78B9D9522ACF98D00DA73D7 /* Player.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Player.storyboard; sourceTree = "<group>"; };
 		A78B9D9822AD5F1B00DA73D7 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
-		A78FF19422B229B90060FDED /* new.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = new.json; sourceTree = "<group>"; };
 		A7D4CD4822AE7C44004BBCA8 /* UsrData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UsrData.h; path = ttt/UsrData.h; sourceTree = SOURCE_ROOT; };
 		A7D4CD4922AE7C44004BBCA8 /* UsrData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UsrData.m; path = ttt/UsrData.m; sourceTree = SOURCE_ROOT; };
+		A7FE94E922BA3FA200857FB9 /* SearchVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchVC.h; sourceTree = "<group>"; };
+		A7FE94EA22BA3FA200857FB9 /* SearchVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchVC.m; sourceTree = "<group>"; };
+		A7FE94EC22BA4AFB00857FB9 /* SearchCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchCell.h; sourceTree = "<group>"; };
+		A7FE94ED22BA4AFB00857FB9 /* SearchCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +99,7 @@
 		A7269F6922A90A8F00E33D93 /* ttt */ = {
 			isa = PBXGroup;
 			children = (
+				A7FE94E822BA3F7B00857FB9 /* Search */,
 				A78B9D8B22AC299600DA73D7 /* Player */,
 				A78B9D7822AAF15900DA73D7 /* PlayList */,
 				A7269F6A22A90A8F00E33D93 /* AppDelegate.h */,
@@ -114,7 +113,6 @@
 				A7269F7522A90A8F00E33D93 /* LaunchScreen.storyboard */,
 				A7269F7822A90A8F00E33D93 /* Info.plist */,
 				A7269F7922A90A8F00E33D93 /* main.m */,
-				A78FF19422B229B90060FDED /* new.json */,
 			);
 			path = ttt;
 			sourceTree = "<group>";
@@ -131,10 +129,6 @@
 		A78B9D7822AAF15900DA73D7 /* PlayList */ = {
 			isa = PBXGroup;
 			children = (
-				A78B9D7922AAF19300DA73D7 /* PlayListCell.h */,
-				A78B9D7A22AAF19300DA73D7 /* PlayListCell.m */,
-				A78B9D7D22AAF32600DA73D7 /* PlayListVC.h */,
-				A78B9D7E22AAF32600DA73D7 /* PlayListVC.m */,
 				A78B9D8222AAF5A600DA73D7 /* AlbumData.h */,
 				A78B9D8022AAF59100DA73D7 /* AlbumData.m */,
 				A78B9D8322AC0CFC00DA73D7 /* Album.storyboard */,
@@ -160,6 +154,17 @@
 				A72FE34022B5517200AB44F9 /* ScheduleCV.m */,
 			);
 			path = Player;
+			sourceTree = "<group>";
+		};
+		A7FE94E822BA3F7B00857FB9 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				A7FE94E922BA3FA200857FB9 /* SearchVC.h */,
+				A7FE94EA22BA3FA200857FB9 /* SearchVC.m */,
+				A7FE94EC22BA4AFB00857FB9 /* SearchCell.h */,
+				A7FE94ED22BA4AFB00857FB9 /* SearchCell.m */,
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -227,7 +232,6 @@
 			files = (
 				A7269F7722A90A8F00E33D93 /* LaunchScreen.storyboard in Resources */,
 				A78B9D8422AC0CFC00DA73D7 /* Album.storyboard in Resources */,
-				A78FF19522B229B90060FDED /* new.json in Resources */,
 				A78B9D9622ACF98D00DA73D7 /* Player.storyboard in Resources */,
 				A7269F7422A90A8F00E33D93 /* Assets.xcassets in Resources */,
 				A7269F7222A90A8F00E33D93 /* Main.storyboard in Resources */,
@@ -247,12 +251,12 @@
 				A7269F6C22A90A8F00E33D93 /* AppDelegate.m in Sources */,
 				A7D4CD4A22AE7C44004BBCA8 /* UsrData.m in Sources */,
 				A78B9D9122AC2A1C00DA73D7 /* Player.m in Sources */,
+				A7FE94EB22BA3FA200857FB9 /* SearchVC.m in Sources */,
 				A78B9D8A22AC173400DA73D7 /* SongCell.m in Sources */,
 				A78B9D8E22AC2A0900DA73D7 /* PlayerVC.m in Sources */,
 				A72FE34122B5517200AB44F9 /* ScheduleCV.m in Sources */,
-				A78B9D7B22AAF19300DA73D7 /* PlayListCell.m in Sources */,
 				A78B9D9422ACEF7600DA73D7 /* PlayerData.m in Sources */,
-				A78B9D7F22AAF32600DA73D7 /* PlayListVC.m in Sources */,
+				A7FE94EE22BA4AFB00857FB9 /* SearchCell.m in Sources */,
 				A78B9D8122AAF59100DA73D7 /* AlbumData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -396,7 +400,7 @@
 				DEVELOPMENT_TEAM = 6YFU3ZSWW4;
 				INFOPLIST_FILE = ttt/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = U0.ttt;
+				PRODUCT_BUNDLE_IDENTIFIER = U0.ting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -411,7 +415,7 @@
 				DEVELOPMENT_TEAM = 6YFU3ZSWW4;
 				INFOPLIST_FILE = ttt/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = U0.ttt;
+				PRODUCT_BUNDLE_IDENTIFIER = U0.ting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -1,14 +1,14 @@
 //
-//  PlayListCell.m
+//  SearchCell.m
 //  ttt
 //
-//  Created by 宋志京 on 2019/6/8.
+//  Created by 宋志京 on 2019/6/19.
 //  Copyright © 2019 宋志京. All rights reserved.
 //
 
-#import "PlayListCell.h"
+#import "SearchCell.h"
 
-@implementation PlayListCell
+@implementation SearchCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
@@ -21,6 +21,4 @@
     // Configure the view for the selected state
 }
 
-- (IBAction)didbuttonClicked:(id)sender {
-}
 @end

@@ -13,6 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface AlbumVC : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
 @property long albumIndex;
+@property (strong,nonatomic) NSString *url;//用url做key
+@property (strong,nonatomic) NSString *mod;//mod只是参考，应该不会冲突
+
 @end
 
 NS_ASSUME_NONNULL_END

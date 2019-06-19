@@ -9,33 +9,22 @@
 #ifndef PlayListData_h
 #define PlayListData_h
 
-@protocol AlbumDataDelegate<NSObject>
-@required
--(void)didAlbumDataChanged;
-@end
-
-@interface SongInfo : NSObject{
-    @public
-    NSString *name;
-    NSString *url;
-}
-@end
-
-@interface AlbumInfo : NSObject<NSURLConnectionDataDelegate>{
-    @public
-    NSString *name;
-    NSArray *songInfoArray;
-};
--(id)initWithName:(NSString *)name SongArray:(NSArray*)songInfoArray;
-
-@end
+@protocol AlbumDataDelegate;
 
 @interface AlbumData : NSObject
-@property (strong,nonatomic) NSMutableArray *AlbumArray;//所有专辑列表
 @property (strong,nonatomic) id<AlbumDataDelegate> delegate;
+//暂时就这么多内容
+@property (strong,nonatomic) NSString *name;
+@property (strong,nonatomic) NSMutableArray *sounds;
 
-+(AlbumData*) getInstance;
+//为http版本，只能先引用，然后等着结果，有了结果再根据结果做事
++(void) getAlbumInfoByURL:(NSString *)url mod:(NSString *)mod delegate:(id<AlbumDataDelegate>)delegate;
 
+@end
+
+@protocol AlbumDataDelegate<NSObject>
+@required
+-(void)didAlbumDataRecv:(AlbumData*)data;
 @end
 
 #endif /* PlayListData_h */
