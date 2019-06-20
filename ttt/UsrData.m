@@ -24,12 +24,17 @@
         self.currentAlbumURL = [dict objectForKey:@"currentAlbumURL"];
         self.mod = [dict objectForKey:@"mod"];
         self.albumConfig = [[NSMutableDictionary alloc]initWithDictionary:[dict objectForKey:@"albumConfig"]];
+        self.albumFavorites = [[NSMutableArray alloc]initWithArray:[dict objectForKey:@"albumFavorites"]];
+        if(self.albumFavorites==nil){//向下兼容
+            self.albumFavorites = [[NSMutableArray alloc]init];
+        }
     }
     NSLog(@"loaded");
 }
 -(void)defaultUsrData{
     self.name = @"u0";
     self.albumConfig = [[NSMutableDictionary alloc]init];
+    self.albumFavorites = [[NSMutableArray alloc]init];
 }
 
 + (NSString *)getDocumentPath{
@@ -44,6 +49,7 @@
     [dict setObject:self.currentAlbumURL forKey:@"currentAlbumURL"];
     [dict setObject:self.mod forKey:@"mod"];
     [dict setObject:self.albumConfig forKey:@"albumConfig"];
+    [dict setObject:self.albumFavorites forKey:@"albumFavorites"];
 //    转成json备用
     if ([NSJSONSerialization isValidJSONObject:dict]){
         NSData *jdata = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];

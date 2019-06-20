@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UINavigationItem *ntitle;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *c;
+@property (weak, nonatomic) IBOutlet UIButton *favButton;
 
 @property (strong,nonatomic)AlbumData* albumData;
 
@@ -38,6 +39,24 @@
     [self.songArrayTV setContentOffset:CGPointMake(0, 44*[[[[AppDelegate getInstance].usrData getAlbumConfig:self.url]objectForKey:@"currentSongIndex"]intValue])];
     [self ntitle].title=self.albumData.name;
     [self.c removeFromSuperview];
+}
+- (IBAction)didFavoritButtonClicked:(id)sender {
+    BOOL isFaved = NO;
+    UsrData *usrData = [AppDelegate getInstance].usrData;
+    for (NSDictionary *album in [usrData albumFavorites]) {
+        if([album objectForKey:@"url"] == self.url){
+            [[usrData albumFavorites]removeObject:album];
+            [[self favButton]setTitle:@"收藏" forState:UIControlStateNormal];
+            isFaved = YES;
+            break;
+        }
+    }
+    if (isFaved == NO){
+        NSMutableDictionary *album = [[NSMutableDictionary alloc]initWithObjectsAndKeys:self.albumData.name,@"title",self.mod,@"mod",self.url,@"url", nil];
+        [[usrData albumFavorites]addObject:album];
+        [[self favButton]setTitle:@"取消收藏" forState:UIControlStateNormal];
+    }
+    [usrData saveUsrData];
 }
 
 - (void)viewDidLoad {
@@ -68,6 +87,12 @@
     [[self rateSlider]setValue:[[config objectForKey:@"rate"]floatValue]];
     [self rateLabel].text = [NSString stringWithFormat:@"%.2fx",self.rateSlider.value];
     
+    for (NSDictionary *album in [usrData albumFavorites]) {
+        if([album objectForKey:@"url"] == self.url){
+            [[self favButton]setTitle:@"取消收藏" forState:UIControlStateNormal];
+            break;
+        }
+    }
 }
 
 - (IBAction)didBackButtonClicked:(id)sender {

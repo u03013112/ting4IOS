@@ -38,6 +38,9 @@
                                                 <rect key="frame" x="302" y="7" width="92" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="收藏"/>
+                                                <connections>
+                                                    <action selector="didFavoritButtonClicked:" destination="YWf-1N-EFO" eventType="touchUpInside" id="2MI-gL-PHW"/>
+                                                </connections>
                                             </button>
                                         </barButtonItem>
                                     </navigationItem>
@@ -169,6 +172,7 @@
                     </view>
                     <connections>
                         <outlet property="c" destination="A3K-eA-LnK" id="IHh-KS-pEL"/>
+                        <outlet property="favButton" destination="hSi-t3-Dxf" id="bNP-lH-2mp"/>
                         <outlet property="jEndLabel" destination="Fkq-vM-Hjt" id="cfK-aI-0N9"/>
                         <outlet property="jEndSlider" destination="o8w-cG-zYN" id="22X-6B-9mJ"/>
                         <outlet property="jStartLabel" destination="sQU-R5-Wch" id="Zhq-z8-PrN"/>

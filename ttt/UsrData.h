@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong,nonatomic) NSString *mod;
 
 @property (strong,nonatomic) NSMutableDictionary *albumConfig;//基于专辑的用户配置
+@property (strong,nonatomic) NSMutableArray *albumFavorites;//基于专辑的用户配置
 
 -(void)loadUsrData;
 -(void)saveUsrData;
@@ -34,5 +35,4 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)setCurrentSeekSec:(long)s;
 -(void)setCurrentSongIndex:(long)i;
 @end
-
 NS_ASSUME_NONNULL_END
