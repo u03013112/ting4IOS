@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
+#import "../PlayList/AlbumData.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,9 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) AVPlayer *player;
 @property long scheduleSec;
 
-//+(Player*)getInstance; 统一放到appdelegate里去做唯一
+-(void)playFromAlbumVC:(AlbumData*)ad Index:(long)index;
 
--(void)play;
+-(void)playWithUrl:(NSString *)url;
 -(void)pause;
 -(void)resume;
 -(void)nextSong;

@@ -7,11 +7,10 @@
 //
 
 #import "PlayerData.h"
-#import "../PlayList/AlbumData.h"
 #import "../AppDelegate.h"
 
 @interface PlayerData()<AlbumDataDelegate>
-@property (strong,nonatomic)AlbumData *albumData;
+
 @end
 
 @implementation PlayerData
@@ -40,16 +39,16 @@ static PlayerData *instance = nil;
     return @"";
 }
 
--(void)preper4Play{
-    UsrData *ud = [AppDelegate getInstance].usrData;
-    NSURL *url = [NSURL URLWithString:@"http://frp.u03013112.win:18004/getmp3url"];
-    NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:url];
+-(void)getSongUrl:(NSString*)mod URL:(NSString*)url Index:(long)index FromBegain:(BOOL) isFromBegain{
+    //    NSURL *url = [NSURL URLWithString:@"http://192.168.1.12:18004/getmp3url"];
+    NSURL *u = [NSURL URLWithString:@"http://192.168.1.12:18004/getmp3url"];
+    NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:u];
     
     NSDictionary *head = [[NSDictionary alloc]initWithObjectsAndKeys:@"application/json",@"Content-Type", nil];
     NSMutableDictionary *postBodyDict = [[NSMutableDictionary alloc]init];
-    [postBodyDict setObject:ud.mod forKey:@"mod"];
-    [postBodyDict setObject:ud.currentAlbumURL forKey:@"url"];
-    [postBodyDict setObject:[NSNumber numberWithInteger:[ud getCurrentSongIndex]] forKey:@"index"];
+    [postBodyDict setObject:mod forKey:@"mod"];
+    [postBodyDict setObject:url forKey:@"url"];
+    [postBodyDict setObject:[NSNumber numberWithInteger:index] forKey:@"index"];
     NSData *postData = [NSJSONSerialization dataWithJSONObject:postBodyDict options:NSJSONWritingPrettyPrinted error:nil];
     
     [mutableRequest setHTTPMethod:@"POST"];
@@ -58,56 +57,28 @@ static PlayerData *instance = nil;
     
     NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:mutableRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error == nil) {
-//            let server return a json
+            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+            NSString *songUrl = [dict objectForKey:@"url"];
+            NSLog(@"%@",songUrl);
+            
+            UsrData *usrData = [AppDelegate getInstance].usrData;
+            usrData.currentAlbumURL = url;
+            usrData.mod = mod;
+            [usrData setCurrentSongIndex:index];
+            if (isFromBegain==YES){
+                [usrData setCurrentSeekSec:0];
+            }
             dispatch_async(dispatch_get_main_queue(), ^{
-//            call player play this url,dont ask why
+                //call player play this url,dont ask why
+                [[[AppDelegate getInstance]player]playWithUrl:songUrl];
             });
         }
     }];
     
     [task resume];
 }
--(NSString*)getCurrentSongUrl{
-        return @"";
-}
-
--(NSString*)getNextSongUrl{
-//    UsrData *usrData = [AppDelegate getInstance].usrData;
-//    AlbumData *albumData = [AlbumData getInstance];
-//    long aIndex = usrData.currentAlbumIndex;
-//
-//    AlbumData *albumInfo = albumData.AlbumArray[aIndex];
-//    if ([[usrData getAlbumData:aIndex] currentSongIndex] >=albumInfo->songInfoArray.count-1){
-//        return nil;
-//    }
-//    [usrData getAlbumData:aIndex].currentSongIndex += 1;
-//    SongInfo *songInfo = albumInfo->songInfoArray[[usrData getAlbumData:aIndex].currentSongIndex];
-//    [usrData saveUsrData];
-//    return songInfo->url;
-    return @"";
-}
--(NSString*)getprevSongUrl{
-//    UsrData *usrData = [AppDelegate getInstance].usrData;
-//    AlbumData *albumData = [AlbumData getInstance];
-//    long aIndex = usrData.currentAlbumIndex;
-//    
-//    AlbumData *albumInfo = albumData.AlbumArray[aIndex];
-//    if ([[usrData getAlbumData:aIndex] currentSongIndex] <= 0){
-//        return nil;
-//    }
-//    [usrData getAlbumData:aIndex].currentSongIndex -= 1;
-//    SongInfo *songInfo = albumInfo->songInfoArray[[usrData getAlbumData:aIndex].currentSongIndex];
-//    [usrData saveUsrData];
-//    return songInfo->url;
-    return @"";
-}
 - (void)didAlbumDataRecv:(AlbumData *)data {
     self.albumData = data;
 }
 
-
-//1 get playing list albumData,can copy from albumData,or get From intelnet
-//2 preper 4 play
-//3 play
-//4 try2next or try2Prev
 @end

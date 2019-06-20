@@ -23,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *songArrayTV;
 @property (weak, nonatomic) IBOutlet UILabel *lastPlayLabel;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
+@property (weak, nonatomic) IBOutlet UINavigationItem *ntitle;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *c;
 
 @property (strong,nonatomic)AlbumData* albumData;
 
@@ -33,36 +35,38 @@
     NSLog(@"%@",data.sounds[0]);
     self.albumData = data;
     [self.songArrayTV reloadData];
+    [self.songArrayTV setContentOffset:CGPointMake(0, 44*[[[[AppDelegate getInstance].usrData getAlbumConfig:self.url]objectForKey:@"currentSongIndex"]intValue])];
+    [self ntitle].title=self.albumData.name;
+    [self.c removeFromSuperview];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    [self.c startAnimating];
     [[self songArrayTV]setDataSource:self];
     [[self songArrayTV]setDelegate:self];
     
     self.albumData = nil;
     [AlbumData getAlbumInfoByURL:[self url] mod:[self mod] delegate:self];
     
-//    UsrData *usrData = [AppDelegate getInstance].usrData;
-//    long aIndex = [self albumIndex];
-//    if ([[usrData getAlbumData:aIndex] currentSongIndex] <= 0){
-//        self.lastPlayLabel.text=@"开始收听吧！";
-//    }else{
-//        self.lastPlayLabel.text=[NSString stringWithFormat:@"上次听到%ld了",[[usrData getAlbumData:aIndex] currentSongIndex]+1];
-//        [self.playButton setTitle:@"继续收听" forState:UIControlStateNormal];
-//        [[self songArrayTV]setContentOffset:CGPointMake(0, [[usrData getAlbumData:aIndex] currentSongIndex]*43.5)];
-//    }
-//
-//    UsrDataWithAlbum *uda = [usrData getAlbumData:[self albumIndex]];
-//
-//    [[self jStartSlider]setValue:[uda startSeekSec]];
-//    [self jStartLabel].text = [NSString stringWithFormat:@"%lds",[uda startSeekSec]];
-//    [[self jEndSlider]setValue:[uda endSeekSec]];
-//    [self jEndLabel].text = [NSString stringWithFormat:@"%lds",[uda endSeekSec]];
-//    [[self rateSlider]setValue:[uda rate]];
-//    [self rateLabel].text = [NSString stringWithFormat:@"%.2fx",[uda rate]];
+    UsrData *usrData = [AppDelegate getInstance].usrData;
+    
+    if ([[[usrData getAlbumConfig:self.url]objectForKey:@"currentSongIndex"]intValue] <= 0){
+        self.lastPlayLabel.text=@"开始收听吧！";
+    }else{
+        self.lastPlayLabel.text=[NSString stringWithFormat:@"上次听到%d了",[[[usrData getAlbumConfig:self.url]objectForKey:@"currentSongIndex"]intValue]+1];
+        [self.playButton setTitle:@"继续收听" forState:UIControlStateNormal];
+    }
+
+    NSMutableDictionary *config = [usrData getAlbumConfig:[self url]];
+
+    [[self jStartSlider]setValue:[[config objectForKey:@"startSeekSec"]intValue]];
+    [self jStartLabel].text = [NSString stringWithFormat:@"%.0fs",self.jStartSlider.value];
+    [[self jEndSlider]setValue:[[config objectForKey:@"endSeekSec"]intValue]];
+    [self jEndLabel].text = [NSString stringWithFormat:@"%.0fs",self.jEndSlider.value];
+    [[self rateSlider]setValue:[[config objectForKey:@"rate"]floatValue]];
+    [self rateLabel].text = [NSString stringWithFormat:@"%.2fx",self.rateSlider.value];
     
 }
 
@@ -96,9 +100,9 @@
 
 
 - (IBAction)didPlayButtonClicked:(id)sender {
-    UsrData *usrData = [AppDelegate getInstance].usrData;
-    usrData.currentAlbumURL = self.url;
-    [[AppDelegate getInstance].player play];
+    UsrData *ud = [[AppDelegate getInstance]usrData];
+    long index = [[[ud getAlbumConfig:self.url]objectForKey:@"currentSongIndex"]intValue];
+    [[AppDelegate getInstance].player playFromAlbumVC:self.albumData Index:index];
     [[self songArrayTV]reloadData];
 }
 
@@ -108,12 +112,9 @@
         NSDictionary *dict =[[self albumData]sounds][indexPath.row];
         cell.songLabel.text = [dict objectForKey:@"title"];
         cell.statusLabel.text = @"";
-        if ([[AppDelegate getInstance].usrData getCurrentSongIndex]==indexPath.row){
-            if([[AppDelegate getInstance].player isPlaying]== YES){
-                cell.statusLabel.text = @"正在播放";
-            }else{
-                cell.statusLabel.text = @"上次播放";
-            }
+        NSDictionary *config =[[AppDelegate getInstance].usrData getAlbumConfig:self.url];
+        if ([[config objectForKey:@"currentSongIndex"]intValue]==indexPath.row){
+            cell.statusLabel.text = @"上次播放";
         }
         return  cell;
     }
@@ -128,10 +129,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    UsrData *usrData = [AppDelegate getInstance].usrData;
-    usrData.currentAlbumURL = self.url;
-    [usrData setCurrentSongIndex:indexPath.row];
-    [[AppDelegate getInstance].player play];
+    [[AppDelegate getInstance].player playFromAlbumVC:self.albumData Index:indexPath.row];
     [[self songArrayTV]reloadData];
 }
 

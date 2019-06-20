@@ -33,7 +33,7 @@
 }
 
 -(void)search:(NSString*)name{
-    NSURL *url = [NSURL URLWithString:@"http://frp.u03013112.win:18004/search"];
+    NSURL *url = [NSURL URLWithString:@"http://192.168.1.12:18004/search"];
     NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:url];
     
     NSDictionary *head = [[NSDictionary alloc]initWithObjectsAndKeys:@"application/json",@"Content-Type", nil];

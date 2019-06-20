@@ -11,7 +11,6 @@
 
 -(id)init{
     if(self = [super init]){
-        self.albumConfig = [[NSMutableDictionary alloc]init];
     }
     return self;
 }
@@ -24,12 +23,13 @@
         self.name = [dict objectForKey:@"name"];
         self.currentAlbumURL = [dict objectForKey:@"currentAlbumURL"];
         self.mod = [dict objectForKey:@"mod"];
-        self.albumConfig = [dict objectForKey:@"albumConfig"];
+        self.albumConfig = [[NSMutableDictionary alloc]initWithDictionary:[dict objectForKey:@"albumConfig"]];
     }
     NSLog(@"loaded");
 }
 -(void)defaultUsrData{
     self.name = @"u0";
+    self.albumConfig = [[NSMutableDictionary alloc]init];
 }
 
 + (NSString *)getDocumentPath{
@@ -53,11 +53,10 @@
     [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
--(NSDictionary*)getAlbumConfig:(NSString*)url{
+-(NSMutableDictionary*)getAlbumConfig:(NSString*)url{
     NSMutableDictionary *config = [[self albumConfig]objectForKey:url];
     if (config == nil){
-        config = [[NSMutableDictionary alloc]initWithObjectsAndKeys:url,@"url",[NSNumber numberWithFloat:1.0],@"rate", nil];
-        [[self albumConfig]setObject:config forKey:url];
+        config = [self defaultConfigForKey:url];
     }
     return config;
 }
@@ -100,41 +99,71 @@
     return [[config objectForKey:@"currentSongIndex"]intValue];
 }
 
+-(NSMutableDictionary*)defaultConfigForKey:(NSString*)url{
+    NSMutableDictionary *config = [[NSMutableDictionary alloc]initWithObjectsAndKeys:[NSNumber numberWithFloat:1.0],@"rate", nil];
+    [[self albumConfig]setObject:config forKey:url];
+    return config;
+}
 
 -(void)setCurrentStartSeekSec:(long)s{
-    NSMutableDictionary *config = [[self albumConfig]objectForKey:self.currentAlbumURL];
-    if (config != nil){
-        [config setObject:[NSNumber numberWithInteger:s] forKey:@"startSeekSec"];
-        [self saveUsrData];
+    NSDictionary *oldC = [[self albumConfig]objectForKey:self.currentAlbumURL];
+    NSMutableDictionary *config = nil;
+    if (oldC == nil){
+        config = [self defaultConfigForKey:self.currentAlbumURL];
+    }else{
+        config = [[NSMutableDictionary alloc]initWithDictionary:oldC];
     }
+    [config setObject:[NSNumber numberWithInteger:s] forKey:@"startSeekSec"];
+    [[self albumConfig]setObject:config forKey:self.currentAlbumURL];
+    [self saveUsrData];
 }
 -(void)setCurrentEndSeekSec:(long)s{
-    NSMutableDictionary *config = [[self albumConfig]objectForKey:self.currentAlbumURL];
-    if (config != nil){
-        [config setObject:[NSNumber numberWithInteger:s] forKey:@"endSeekSec"];
-        [self saveUsrData];
+    NSDictionary *oldC = [[self albumConfig]objectForKey:self.currentAlbumURL];
+    NSMutableDictionary *config = nil;
+    if (oldC == nil){
+        config = [self defaultConfigForKey:self.currentAlbumURL];
+    }else{
+        config = [[NSMutableDictionary alloc]initWithDictionary:oldC];
     }
+    [config setObject:[NSNumber numberWithInteger:s] forKey:@"endSeekSec"];
+    [[self albumConfig]setObject:config forKey:self.currentAlbumURL];
+    [self saveUsrData];
 }
 -(void)setCurrentRate:(float)r{
-    NSMutableDictionary *config = [[self albumConfig]objectForKey:self.currentAlbumURL];
-    if (config != nil){
-        [config setObject:[NSNumber numberWithFloat:r] forKey:@"rate"];
-        [self saveUsrData];
+    NSDictionary *oldC = [[self albumConfig]objectForKey:self.currentAlbumURL];
+    NSMutableDictionary *config = nil;
+    if (oldC == nil){
+        config = [self defaultConfigForKey:self.currentAlbumURL];
+    }else{
+        config = [[NSMutableDictionary alloc]initWithDictionary:oldC];
     }
+    [config setObject:[NSNumber numberWithFloat:r] forKey:@"rate"];
+    [[self albumConfig]setObject:config forKey:self.currentAlbumURL];
+    [self saveUsrData];
 }
 
 -(void)setCurrentSeekSec:(long)s{
-    NSMutableDictionary *config = [[self albumConfig]objectForKey:self.currentAlbumURL];
-    if (config != nil){
-        [config setObject:[NSNumber numberWithInteger:s] forKey:@"currentSeekSec"];
-        [self saveUsrData];
+    NSDictionary *oldC = [[self albumConfig]objectForKey:self.currentAlbumURL];
+    NSMutableDictionary *config = nil;
+    if (oldC == nil){
+        config = [self defaultConfigForKey:self.currentAlbumURL];
+    }else{
+        config = [[NSMutableDictionary alloc]initWithDictionary:oldC];
     }
+    [config setObject:[NSNumber numberWithInteger:s] forKey:@"currentSeekSec"];
+    [[self albumConfig]setObject:config forKey:self.currentAlbumURL];
+    [self saveUsrData];
 }
 -(void)setCurrentSongIndex:(long)i{
-    NSMutableDictionary *config = [[self albumConfig]objectForKey:self.currentAlbumURL];
-    if (config != nil){
-        [config setObject:[NSNumber numberWithInteger:i] forKey:@"currentSongIndex"];
-        [self saveUsrData];
+    NSDictionary *oldC = [[self albumConfig]objectForKey:self.currentAlbumURL];
+    NSMutableDictionary *config = nil;
+    if (oldC == nil){
+        config = [self defaultConfigForKey:self.currentAlbumURL];
+    }else{
+        config = [[NSMutableDictionary alloc]initWithDictionary:oldC];
     }
+    [config setObject:[NSNumber numberWithInteger:i] forKey:@"currentSongIndex"];
+    [[self albumConfig]setObject:config forKey:self.currentAlbumURL];
+    [self saveUsrData];
 }
 @end

@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)loadUsrData;
 -(void)saveUsrData;
 
--(NSDictionary*)getAlbumConfig:(NSString*)url;//use url for key
+-(NSMutableDictionary*)getAlbumConfig:(NSString*)url;//use url for key
 
 -(long)getCurrentStartSeekSec;
 -(long)getCurrentEndSeekSec;
