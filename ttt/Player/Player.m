@@ -10,7 +10,6 @@
 #import "PlayerData.h"
 #import "../AppDelegate.h"
 #import <MediaPlayer/MediaPlayer.h>
-
 @interface Player()
 @end
 
@@ -30,16 +29,13 @@
     return self;
 }
 
--(void)play{
-    NSString *url = [[PlayerData getInstance] getCurrentSongUrl];
+-(void)playWithUrl:(NSString *)url{
     AVPlayerItem * item = [[AVPlayerItem alloc]initWithURL:[NSURL URLWithString:url]];
     [[self player] replaceCurrentItemWithPlayerItem:item];
-    
     [[self player]seekToTime:CMTimeMake([[[AppDelegate getInstance]usrData]getCurrentSeekSec], 1)];
-    
     [[self player]play];
     self.isPlaying = YES;
-    NSLog(@"play %@\n%@",[[PlayerData getInstance] getCurrentSongName],[[PlayerData getInstance] getCurrentSongUrl]);
+    NSLog(@"play %@\n%@",[[PlayerData getInstance] getCurrentSongName],url);
 }
 
 -(void)updatePerSec{
@@ -49,10 +45,9 @@
     if (current) {
         NSLog(@"%@/%@\n",[NSString stringWithFormat:@"%.f",current],[NSString stringWithFormat:@"%.2f",total]);
         
-        if([[NSString stringWithFormat:@"%.f",current]integerValue]%30==0){//每隔30秒存一次目前进度
-            [[[AppDelegate getInstance]usrData]setCurrentSeekSec:current+1];//防止一读档就又要存档
+        if([[NSString stringWithFormat:@"%.f",current]integerValue]%30==1){//每隔30秒存一次目前进度
+            [[[AppDelegate getInstance]usrData]setCurrentSeekSec:current+2];//防止一读档就又要存档
             [[[AppDelegate getInstance]usrData]saveUsrData];
-//            [self reflushMPCenter];//也有空就刷一下，保障进度
         }
         
         long startSeekSec = [[[AppDelegate getInstance] usrData]getCurrentStartSeekSec];
@@ -90,23 +85,6 @@
 -(void)resume{
     [[self player]play];
     self.isPlaying = YES;
-}
--(void)nextSong{
-    NSString *url = [[PlayerData getInstance] getNextSongUrl];
-    if (url==nil){
-        return;
-    }
-    AVPlayerItem * item = [[AVPlayerItem alloc]initWithURL:[NSURL URLWithString:url]];
-    [[self player] replaceCurrentItemWithPlayerItem:item];
-}
--(void)prevSong{
-    NSString *url = [[PlayerData getInstance] getprevSongUrl];
-    if (url==nil){
-        return;
-    }
-    AVPlayerItem * item = [[AVPlayerItem alloc]initWithURL:[NSURL URLWithString:url]];
-    
-    [[self player] replaceCurrentItemWithPlayerItem:item];
 }
 
 /**
@@ -184,5 +162,26 @@
     [info setObject:@(total) forKey:MPMediaItemPropertyPlaybackDuration];
     [info setObject:@([[[AppDelegate getInstance] usrData] getCurrentRate]) forKey:MPNowPlayingInfoPropertyPlaybackRate];
     [[MPNowPlayingInfoCenter defaultCenter]setNowPlayingInfo:info];
+}
+
+-(void)playFromAlbumVC:(AlbumData*)ad Index:(long)index{
+    [PlayerData getInstance].albumData = ad;
+    [self try2Play:ad.mod URL:ad.url Index:index FromBegain:NO];
+}
+
+-(void)try2Play:(NSString*)mod URL:(NSString*)url Index:(long)index FromBegain:(BOOL) isFromBegain{
+    [[PlayerData getInstance]getSongUrl:mod URL:url Index:index FromBegain:isFromBegain];
+}
+-(void)nextSong{
+    UsrData *ud = [[AppDelegate getInstance]usrData];
+    long index = [ud getCurrentSongIndex];
+    index++;
+    [self try2Play:[PlayerData getInstance].albumData.mod URL:[PlayerData getInstance].albumData.url Index:index FromBegain:YES];
+}
+-(void)prevSong{
+    UsrData *ud = [[AppDelegate getInstance]usrData];
+    long index = [ud getCurrentSongIndex];
+    index--;
+    [self try2Play:[PlayerData getInstance].albumData.mod URL:[PlayerData getInstance].albumData.url Index:index FromBegain:YES];
 }
 @end

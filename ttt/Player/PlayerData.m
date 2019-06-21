@@ -7,84 +7,78 @@
 //
 
 #import "PlayerData.h"
-#import "../PlayList/AlbumData.h"
 #import "../AppDelegate.h"
 
+@interface PlayerData()<AlbumDataDelegate>
+
+@end
+
 @implementation PlayerData
-PlayerData *instance1 = nil;
+static PlayerData *instance = nil;
 +(PlayerData*) getInstance{
-    if(instance1 == nil){
-        instance1 = [[PlayerData alloc]init];
+    if(instance == nil){
+        instance = [[PlayerData alloc]init];
+        instance.albumData = nil;
     }
-    return instance1;
+    return instance;
 }
 
 -(NSString*)getCurrentAlbumName{
-//    AlbumData *albumData = [AlbumData getInstance];
-//    long aIndex = [AppDelegate getInstance].usrData.currentAlbumIndex;
-//    if(aIndex>=albumData.AlbumArray.count){
-//        return nil;
-//    }
-//    AlbumData *albumInfo = albumData.AlbumArray[aIndex];
-//    return albumInfo->name;
+    if([self albumData]!=nil){
+        return [[self albumData]name];
+    }
     return @"";
 }
 
 -(NSString*)getCurrentSongName{
-//    UsrData *usrData = [AppDelegate getInstance].usrData;
-//    AlbumData *albumData = [AlbumData getInstance];
-//    long aIndex = usrData.currentAlbumIndex;
-//    if(aIndex>=albumData.AlbumArray.count){
-//        return nil;
-//    }
-//    AlbumData *albumInfo = albumData.AlbumArray[aIndex];
-//    long sIndex = [[usrData getAlbumData:aIndex] currentSongIndex];
-//    SongInfo *songInfo = albumInfo->songInfoArray[sIndex];
-//    return songInfo->name;
+    if([self albumData]!=nil){
+        long sIndex = [[AppDelegate getInstance].usrData getCurrentSongIndex];
+        NSDictionary *soundInfo = [[self albumData]sounds][sIndex];
+        return [soundInfo objectForKey:@"title"];
+    }
     return @"";
 }
 
--(NSString*)getCurrentSongUrl{
-//    UsrData *usrData = [AppDelegate getInstance].usrData;
-//    AlbumData *albumData = [AlbumData getInstance];
-//    long aIndex = usrData.currentAlbumIndex;
-//
-//    AlbumData *albumInfo = albumData.AlbumArray[aIndex];
-//    long sIndex = [[usrData getAlbumData:aIndex] currentSongIndex];
-//    SongInfo *songInfo = albumInfo->songInfoArray[sIndex];
-//    [usrData saveUsrData];
-//    return songInfo->url;
-    return @"";
+-(void)getSongUrl:(NSString*)mod URL:(NSString*)url Index:(long)index FromBegain:(BOOL) isFromBegain{
+    //    NSURL *url = [NSURL URLWithString:@"http://192.168.1.12:18004/getmp3url"];
+    NSURL *u = [NSURL URLWithString:@"http://192.168.1.12:18004/getmp3url"];
+    NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:u];
+    
+    NSDictionary *head = [[NSDictionary alloc]initWithObjectsAndKeys:@"application/json",@"Content-Type", nil];
+    NSMutableDictionary *postBodyDict = [[NSMutableDictionary alloc]init];
+    [postBodyDict setObject:mod forKey:@"mod"];
+    [postBodyDict setObject:url forKey:@"url"];
+    [postBodyDict setObject:[NSNumber numberWithInteger:index] forKey:@"index"];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:postBodyDict options:NSJSONWritingPrettyPrinted error:nil];
+    
+    [mutableRequest setHTTPMethod:@"POST"];
+    [mutableRequest setHTTPBody:postData];
+    [mutableRequest setAllHTTPHeaderFields:head];
+    
+    NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:mutableRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error == nil) {
+            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+            NSString *songUrl = [dict objectForKey:@"url"];
+            NSLog(@"%@",songUrl);
+            
+            UsrData *usrData = [AppDelegate getInstance].usrData;
+            usrData.currentAlbumURL = url;
+            usrData.mod = mod;
+            [usrData setCurrentSongIndex:index];
+            if (isFromBegain==YES){
+                [usrData setCurrentSeekSec:0];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                //call player play this url,dont ask why
+                [[[AppDelegate getInstance]player]playWithUrl:songUrl];
+            });
+        }
+    }];
+    
+    [task resume];
+}
+- (void)didAlbumDataRecv:(AlbumData *)data {
+    self.albumData = data;
 }
 
--(NSString*)getNextSongUrl{
-//    UsrData *usrData = [AppDelegate getInstance].usrData;
-//    AlbumData *albumData = [AlbumData getInstance];
-//    long aIndex = usrData.currentAlbumIndex;
-//
-//    AlbumData *albumInfo = albumData.AlbumArray[aIndex];
-//    if ([[usrData getAlbumData:aIndex] currentSongIndex] >=albumInfo->songInfoArray.count-1){
-//        return nil;
-//    }
-//    [usrData getAlbumData:aIndex].currentSongIndex += 1;
-//    SongInfo *songInfo = albumInfo->songInfoArray[[usrData getAlbumData:aIndex].currentSongIndex];
-//    [usrData saveUsrData];
-//    return songInfo->url;
-    return @"";
-}
--(NSString*)getprevSongUrl{
-//    UsrData *usrData = [AppDelegate getInstance].usrData;
-//    AlbumData *albumData = [AlbumData getInstance];
-//    long aIndex = usrData.currentAlbumIndex;
-//    
-//    AlbumData *albumInfo = albumData.AlbumArray[aIndex];
-//    if ([[usrData getAlbumData:aIndex] currentSongIndex] <= 0){
-//        return nil;
-//    }
-//    [usrData getAlbumData:aIndex].currentSongIndex -= 1;
-//    SongInfo *songInfo = albumInfo->songInfoArray[[usrData getAlbumData:aIndex].currentSongIndex];
-//    [usrData saveUsrData];
-//    return songInfo->url;
-    return @"";
-}
 @end

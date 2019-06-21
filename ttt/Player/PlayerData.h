@@ -7,19 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "../PlayList/AlbumData.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PlayerData : NSObject
+@property (strong,nonatomic)AlbumData *albumData;
 
 +(PlayerData*) getInstance;
 
 -(NSString*)getCurrentAlbumName;
 -(NSString*)getCurrentSongName;
--(NSString*)getCurrentSongUrl;
 
--(NSString*)getNextSongUrl;
--(NSString*)getprevSongUrl;
+-(void)getSongUrl:(NSString*)mod URL:(NSString*)url Index:(long)index FromBegain:(BOOL) isFromBegain;
 
 @end
 

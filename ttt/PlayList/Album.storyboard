@@ -38,6 +38,9 @@
                                                 <rect key="frame" x="302" y="7" width="92" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="收藏"/>
+                                                <connections>
+                                                    <action selector="didFavoritButtonClicked:" destination="YWf-1N-EFO" eventType="touchUpInside" id="2MI-gL-PHW"/>
+                                                </connections>
                                             </button>
                                         </barButtonItem>
                                     </navigationItem>
@@ -159,16 +162,23 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="A3K-eA-LnK">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="9Ys-YV-wGJ"/>
                     </view>
                     <connections>
+                        <outlet property="c" destination="A3K-eA-LnK" id="IHh-KS-pEL"/>
+                        <outlet property="favButton" destination="hSi-t3-Dxf" id="bNP-lH-2mp"/>
                         <outlet property="jEndLabel" destination="Fkq-vM-Hjt" id="cfK-aI-0N9"/>
                         <outlet property="jEndSlider" destination="o8w-cG-zYN" id="22X-6B-9mJ"/>
                         <outlet property="jStartLabel" destination="sQU-R5-Wch" id="Zhq-z8-PrN"/>
                         <outlet property="jStartSlider" destination="PrB-T3-Ouo" id="twO-7G-Mhg"/>
                         <outlet property="lastPlayLabel" destination="jA9-l8-4fC" id="uyf-MV-Hfb"/>
+                        <outlet property="ntitle" destination="4ag-Sw-e3i" id="a3Q-iC-mdl"/>
                         <outlet property="playButton" destination="phk-O2-9N7" id="FmP-0u-yaG"/>
                         <outlet property="rateLabel" destination="SMw-Y0-aZq" id="zzS-bB-IfQ"/>
                         <outlet property="rateSlider" destination="zlB-yL-qt6" id="ev4-IN-NoJ"/>

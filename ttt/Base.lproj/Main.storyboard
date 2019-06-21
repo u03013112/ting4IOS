@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--预留-->
+        <!--SearchVC-->
         <scene sceneID="ePE-Xb-yRb">
             <objects>
                 <viewController id="Ozy-7x-YZI" customClass="SearchVC" sceneMemberID="viewController">
@@ -87,7 +87,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Dar-Cq-jes"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="预留" id="eyh-Yb-XA3"/>
+                    <tabBarItem key="tabBarItem" systemItem="search" id="eyh-Yb-XA3"/>
                     <connections>
                         <outlet property="nameInput" destination="Ztv-HA-olh" id="0hQ-mY-phl"/>
                         <outlet property="tableView" destination="3mg-qD-Wbe" id="pkm-T5-Y2E"/>
@@ -100,7 +100,7 @@
         <!--PlayListVC-->
         <scene sceneID="yzk-kr-Lie">
             <objects>
-                <viewController id="oEG-4j-lcj" userLabel="PlayListVC" customClass="ViewController" sceneMemberID="viewController">
+                <viewController id="oEG-4j-lcj" userLabel="PlayListVC" customClass="FavoritesVC" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YCI-OK-FoS">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -110,16 +110,37 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="PlayListCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlayListCell" id="wbI-Y1-UnG" customClass="PlayListCell">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SearchCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchCell" rowHeight="130" id="KAt-ZA-nOE" customClass="SearchCell">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="130"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wbI-Y1-UnG" id="RVi-Ke-Ux4">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KAt-ZA-nOE" id="15D-3o-B4A">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="129.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="just for test now!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SDh-Qv-7pf">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="名称：这是一个名字很长的小说" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b7c-gE-AFg">
                                                     <rect key="frame" x="20" y="11" width="374" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="作者：这是一个名字很长的作者" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1d4-oc-3n3">
+                                                    <rect key="frame" x="20" y="40" width="374" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="声优：这是一个名字很长的声优" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X34-ax-YDS">
+                                                    <rect key="frame" x="20" y="69" width="374" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="预留：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cp9-a9-V6Q">
+                                                    <rect key="frame" x="20" y="98" width="374" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -127,7 +148,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="label" destination="SDh-Qv-7pf" id="NMy-fG-AF2"/>
+                                            <outlet property="authorLabel" destination="1d4-oc-3n3" id="SkZ-7e-1wB"/>
+                                            <outlet property="nameLabel" destination="b7c-gE-AFg" id="BE0-QP-dPN"/>
+                                            <outlet property="soundLabel" destination="X34-ax-YDS" id="TDF-zC-8mF"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -140,7 +163,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="上次播放：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D0M-Bb-wON">
-                                <rect key="frame" x="20" y="90" width="87" height="21"/>
+                                <rect key="frame" x="20" y="90" width="268" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -158,7 +181,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="27"/>
                                 <connections>
-                                    <action selector="didPlayButtonClicked:" destination="oEG-4j-lcj" eventType="touchUpInside" id="5F5-CG-QVa"/>
+                                    <action selector="didPlayButtonClicked:" destination="oEG-4j-lcj" eventType="touchUpInside" id="wai-MS-8Rz"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LEz-bi-etZ">
@@ -166,7 +189,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="定时关闭"/>
                                 <connections>
-                                    <action selector="didScheduleButtonClicked:" destination="oEG-4j-lcj" eventType="touchUpInside" id="ZOR-F4-VBi"/>
+                                    <action selector="didScheduleButtonClicked:" destination="oEG-4j-lcj" eventType="touchUpInside" id="dQN-XU-Idz"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="倒计时 00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oUY-JS-Vmq">
@@ -176,16 +199,25 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sWV-xw-YEk">
+                                <rect key="frame" x="106" y="401" width="31" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="刷新"/>
+                                <connections>
+                                    <action selector="didReflushButtonClicked:" destination="oEG-4j-lcj" eventType="touchUpInside" id="kKj-ny-wYS"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="448-n6-N35"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="播放列表" id="g1H-hX-gAa"/>
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="g1H-hX-gAa"/>
                     <connections>
-                        <outlet property="lastLabel" destination="Qi1-x5-s6c" id="6A8-q5-uyz"/>
-                        <outlet property="playButton" destination="9F1-sO-thN" id="1qM-6q-7ey"/>
-                        <outlet property="playlistTV" destination="2wY-xq-XzO" id="egK-SA-LJC"/>
-                        <outlet property="scheduleLabel" destination="oUY-JS-Vmq" id="6PU-7u-woK"/>
+                        <outlet property="AlbumTV" destination="2wY-xq-XzO" id="bcm-ja-Tyg"/>
+                        <outlet property="lastLabel" destination="D0M-Bb-wON" id="tzu-Oy-rLC"/>
+                        <outlet property="loadingLabel" destination="Qi1-x5-s6c" id="hNH-U1-l5h"/>
+                        <outlet property="playButton" destination="9F1-sO-thN" id="Dsk-2b-2qz"/>
+                        <outlet property="scheduleLabel" destination="oUY-JS-Vmq" id="N1M-9W-Oed"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YDo-Q3-AR3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -202,7 +234,8 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="Ozy-7x-YZI" kind="relationship" relationship="viewControllers" id="5M6-le-ko3"/>
+                        <segue destination="oEG-4j-lcj" kind="relationship" relationship="viewControllers" id="G4j-BX-Nui"/>
+                        <segue destination="Ozy-7x-YZI" kind="relationship" relationship="viewControllers" id="qup-zX-TZb"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="96g-PJ-asF" userLabel="First Responder" sceneMemberID="firstResponder"/>

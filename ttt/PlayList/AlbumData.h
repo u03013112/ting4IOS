@@ -14,6 +14,8 @@
 @interface AlbumData : NSObject
 @property (strong,nonatomic) id<AlbumDataDelegate> delegate;
 //暂时就这么多内容
+@property (strong,nonatomic) NSString *url;//key
+@property (strong,nonatomic) NSString *mod;
 @property (strong,nonatomic) NSString *name;
 @property (strong,nonatomic) NSMutableArray *sounds;
 

@@ -13,7 +13,7 @@
 
 +(void) getAlbumInfoByURL:(NSString *)urlIN mod:(NSString *)mod delegate:(id<AlbumDataDelegate>)delegate{
     
-    NSURL *url = [NSURL URLWithString:@"http://frp.u03013112.win:18004/getalbumData"];
+    NSURL *url = [NSURL URLWithString:@"http://192.168.1.12:18004/getalbumData"];
     NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:url];
     
     NSDictionary *head = [[NSDictionary alloc]initWithObjectsAndKeys:@"application/json",@"Content-Type", nil];
@@ -30,6 +30,8 @@
         if (error == nil) {
             AlbumData *albumInfo = [[AlbumData alloc]init];
             NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+            albumInfo.url = urlIN;
+            albumInfo.mod = mod;
             albumInfo.name = [dict objectForKey:@"title"];
             albumInfo.sounds = [[NSMutableArray alloc]init];
             NSArray *sounds = [dict objectForKey:@"sounds"];
