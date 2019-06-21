@@ -40,8 +40,8 @@ static PlayerData *instance = nil;
 }
 
 -(void)getSongUrl:(NSString*)mod URL:(NSString*)url Index:(long)index FromBegain:(BOOL) isFromBegain{
-    //    NSURL *url = [NSURL URLWithString:@"http://192.168.1.12:18004/getmp3url"];
-    NSURL *u = [NSURL URLWithString:@"http://192.168.1.12:18004/getmp3url"];
+    //    NSURL *url = [NSURL URLWithString:@"http://frp.u03013112.win:18004/getmp3url"];
+    NSURL *u = [NSURL URLWithString:@"http://frp.u03013112.win:18004/getmp3url"];
     NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:u];
     
     NSDictionary *head = [[NSDictionary alloc]initWithObjectsAndKeys:@"application/json",@"Content-Type", nil];

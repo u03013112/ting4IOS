@@ -13,7 +13,7 @@
 
 +(void) getAlbumInfoByURL:(NSString *)urlIN mod:(NSString *)mod delegate:(id<AlbumDataDelegate>)delegate{
     
-    NSURL *url = [NSURL URLWithString:@"http://192.168.1.12:18004/getalbumData"];
+    NSURL *url = [NSURL URLWithString:@"http://frp.u03013112.win:18004/getalbumData"];
     NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:url];
     
     NSDictionary *head = [[NSDictionary alloc]initWithObjectsAndKeys:@"application/json",@"Content-Type", nil];
