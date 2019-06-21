@@ -33,6 +33,8 @@
 }
 -(void)defaultUsrData{
     self.name = @"u0";
+    self.currentAlbumURL = @"";
+    self.mod = @"";
     self.albumConfig = [[NSMutableDictionary alloc]init];
     self.albumFavorites = [[NSMutableArray alloc]init];
 }

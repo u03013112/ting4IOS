@@ -27,11 +27,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-//    for (NSDictionary *d in [AppDelegate getInstance].usrData.albumFavorites) {
-//        if([d objectForKey:@"title"]==nil){
-//            [[AppDelegate getInstance].usrData.albumFavorites removeObject:d];
-//        }
-//    }
+    for (NSDictionary *d in [AppDelegate getInstance].usrData.albumFavorites) {
+        if([d objectForKey:@"title"]==nil){
+            [[AppDelegate getInstance].usrData.albumFavorites removeObject:d];
+        }
+    }
     [[self AlbumTV]setDelegate:self];
     [[self AlbumTV]setDataSource:self];
     

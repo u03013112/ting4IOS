@@ -12,6 +12,9 @@
 @implementation AlbumData
 
 +(void) getAlbumInfoByURL:(NSString *)urlIN mod:(NSString *)mod delegate:(id<AlbumDataDelegate>)delegate{
+    if(urlIN == nil  || mod ==nil || [urlIN  isEqual: @""] || [mod  isEqual: @""] ){
+        return;
+    }
     
     NSURL *url = [NSURL URLWithString:@"http://frp.u03013112.win:18004/getalbumData"];
     NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:url];
