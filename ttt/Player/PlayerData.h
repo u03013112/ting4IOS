@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PlayerData : NSObject
-@property (strong,nonatomic)AlbumData *albumData;
+@property (strong,nonatomic,nullable)AlbumData *albumData;
 
 +(PlayerData*) getInstance;
 

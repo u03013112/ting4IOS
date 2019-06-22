@@ -11,6 +11,7 @@
 #import "AlbumVC.h"
 
 @interface SearchVC ()<UITableViewDataSource,UITableViewDelegate>
+@property (weak, nonatomic) IBOutlet UIButton *searchButton;
 @property (strong,nonatomic) NSMutableArray *retArray;
 @end
 
@@ -22,6 +23,9 @@
     self.retArray = [[NSMutableArray alloc]init];
     [[self tableView]setDataSource:self];
     [[self tableView]setDelegate:self];
+    
+    [self.searchButton setTitle:@"搜索" forState:UIControlStateNormal];
+    [self.searchButton setTitle:@"搜索中" forState:UIControlStateDisabled];
 }
 
 - (IBAction)didSearchButtonClicked:(id)sender {
@@ -33,6 +37,8 @@
 }
 
 -(void)search:(NSString*)name{
+    
+    [self.searchButton setEnabled:NO];
     NSURL *url = [NSURL URLWithString:@"http://frp.u03013112.win:18004/search"];
     NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:url];
     
@@ -60,6 +66,8 @@
             }
             
             dispatch_async(dispatch_get_main_queue(), ^{
+
+                [self.searchButton setEnabled:YES];
                 NSLog(@"%@",[self retArray]);
                 [[self tableView]reloadData];
             });

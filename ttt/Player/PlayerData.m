@@ -11,6 +11,10 @@
 
 @interface PlayerData()<AlbumDataDelegate>
 
+@property (strong,nonatomic) NSString *currentUrl;
+@property (strong,nonatomic) NSString *nextUrl;
+@property BOOL isReady;
+
 @end
 
 @implementation PlayerData
@@ -19,6 +23,7 @@ static PlayerData *instance = nil;
     if(instance == nil){
         instance = [[PlayerData alloc]init];
         instance.albumData = nil;
+        instance.isReady = YES;
     }
     return instance;
 }
@@ -40,7 +45,11 @@ static PlayerData *instance = nil;
 }
 
 -(void)getSongUrl:(NSString*)mod URL:(NSString*)url Index:(long)index FromBegain:(BOOL) isFromBegain{
-    //    NSURL *url = [NSURL URLWithString:@"http://frp.u03013112.win:18004/getmp3url"];
+    if (self.isReady == NO){
+        return;
+    }else{
+        self.isReady = NO;
+    }
     NSURL *u = [NSURL URLWithString:@"http://frp.u03013112.win:18004/getmp3url"];
     NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:u];
     
@@ -56,10 +65,21 @@ static PlayerData *instance = nil;
     [mutableRequest setAllHTTPHeaderFields:head];
     
     NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:mutableRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        self.isReady = YES;
         if (error == nil) {
-            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+            NSError *error;
+            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+            if (error !=nil){
+                NSLog(@"%@",error);
+                return ;
+            }
+            if(![[dict objectForKey:@"error"] isEqual:@""]){
+                NSLog(@"timeout");
+                return ;
+            }
             NSString *songUrl = [dict objectForKey:@"url"];
             NSLog(@"%@",songUrl);
+            self.currentUrl = songUrl;
             
             UsrData *usrData = [AppDelegate getInstance].usrData;
             usrData.currentAlbumURL = url;
@@ -72,6 +92,33 @@ static PlayerData *instance = nil;
                 //call player play this url,dont ask why
                 [[[AppDelegate getInstance]player]playWithUrl:songUrl];
             });
+            
+//            for next
+            [postBodyDict setObject:[NSNumber numberWithInteger:index+1] forKey:@"index"];
+            NSData *postData = [NSJSONSerialization dataWithJSONObject:postBodyDict options:NSJSONWritingPrettyPrinted error:nil];
+            
+            [mutableRequest setHTTPMethod:@"POST"];
+            [mutableRequest setHTTPBody:postData];
+            [mutableRequest setAllHTTPHeaderFields:head];
+            
+            NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:mutableRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                if (error == nil) {
+                    NSError *error;
+                    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+                    if (error !=nil){
+                        NSLog(@"%@",error);
+                        return ;
+                    }
+                    if(![[dict objectForKey:@"error"] isEqual:@""]){
+                        NSLog(@"timeout");
+                        return ;
+                    }
+                    NSString *songUrl = [dict objectForKey:@"url"];
+                    NSLog(@"nextUrl:%@",songUrl);
+                    self.nextUrl = songUrl;
+                }
+            }];
+            [task resume];
         }
     }];
     

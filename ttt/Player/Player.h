@@ -14,12 +14,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Player : NSObject
 
-@property bool isPlaying;
-@property (strong, nonatomic) id timeObserve;
+@property BOOL isPlaying;
+@property BOOL isLoading;//正在获取URL中
+
 @property (strong, nonatomic) AVPlayer *player;
 @property long scheduleSec;
 
+//正在播放的信息
+@property (strong,nonatomic)NSString *currentUrl;
+@property long currentIndex;
+@property (strong,nonatomic)NSString *mp3Url;
+//正在准备的信息
+@property (strong,nonatomic)NSString *loadingUrl;
+@property long loadingIndex;
+
+@property float current,total,ava;
+
 -(void)playFromAlbumVC:(AlbumData*)ad Index:(long)index;
+-(void)playFromAlbumVC:(AlbumData*)ad Index:(long)index FromBegain:(BOOL)isFromeBegain;
 
 -(void)playWithUrl:(NSString *)url;
 -(void)pause;

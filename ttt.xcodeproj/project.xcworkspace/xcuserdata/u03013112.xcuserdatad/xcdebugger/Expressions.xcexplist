@@ -3,6 +3,12 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "-[UsrData getCurrentStartSeekSec]:UsrData.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[UsrData defaultConfigForKey:]:UsrData.m">
+      </ContextState>
+      <ContextState
          contextName = "-[AlbumVC tableView:didSelectRowAtIndexPath:]:AlbumVC.m">
          <PersistentStrings>
             <PersistentString
@@ -11,7 +17,32 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[UsrData getCurrentStartSeekSec]:UsrData.m">
+         contextName = "-[UsrData saveUsrData]:UsrData.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[AlbumVC didFavoritButtonClicked:]:AlbumVC.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[AlbumVC setAlbumInfo:]:AlbumVC.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[FavoritesVC viewDidLoad]:FavoritesVC.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[AppDelegate getInstance].usrData.albumFavorites">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[Player updatePerSec]:Player.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.player.currentItem">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[Player play]:Player.m">
       </ContextState>
       <ContextState
          contextName = "-[FavoritesVC tableView:numberOfRowsInSection:]:FavoritesVC.m">
@@ -20,24 +51,6 @@
                value = "[AppDelegate getInstance].usrData.albumFavorites">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[UsrData saveUsrData]:UsrData.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[AlbumVC setAlbumInfo:]:AlbumVC.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[AlbumVC didFavoritButtonClicked:]:AlbumVC.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[Player play]:Player.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[UsrData defaultConfigForKey:]:UsrData.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[Player updatePerSec]:Player.m">
       </ContextState>
       <ContextState
          contextName = "-[UsrData loadUsrData]:UsrData.m">

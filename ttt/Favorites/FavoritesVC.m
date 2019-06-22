@@ -27,9 +27,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    for (NSDictionary *d in [AppDelegate getInstance].usrData.albumFavorites) {
-        if([d objectForKey:@"title"]==nil){
-            [[AppDelegate getInstance].usrData.albumFavorites removeObject:d];
+    if([AppDelegate getInstance].usrData.albumFavorites.count >0){
+        for (unsigned long i=[AppDelegate getInstance].usrData.albumFavorites.count-1;i>0;--i){
+            NSDictionary *d = [AppDelegate getInstance].usrData.albumFavorites[i];
+            if([d objectForKey:@"title"]==nil){
+                [[AppDelegate getInstance].usrData.albumFavorites removeObject:d];
+            }
         }
     }
     [[self AlbumTV]setDelegate:self];
@@ -97,6 +100,11 @@
                 long index = [[[ud getAlbumConfig:self.albumData.url]objectForKey:@"currentSongIndex"]intValue];
                 [[AppDelegate getInstance].player playFromAlbumVC:self.albumData Index:index];
             }
+            
+            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Player" bundle:nil];
+            AlbumVC *vc = [sb instantiateViewControllerWithIdentifier:@"PlayerVC"];
+            [self addChildViewController:vc];
+            [self.view addSubview:vc.view];
         }
     }
 }

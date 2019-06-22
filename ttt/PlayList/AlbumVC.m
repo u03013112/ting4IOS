@@ -93,6 +93,10 @@
             break;
         }
     }
+    
+    [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^(NSTimer * _Nonnull timer) {
+        [self updatePerSec];
+    }];
 }
 
 - (IBAction)didBackButtonClicked:(id)sender {
@@ -137,10 +141,22 @@
         NSDictionary *dict =[[self albumData]sounds][indexPath.row];
         cell.songLabel.text = [dict objectForKey:@"title"];
         cell.statusLabel.text = @"";
-        NSDictionary *config =[[AppDelegate getInstance].usrData getAlbumConfig:self.url];
-        if ([[config objectForKey:@"currentSongIndex"]intValue]==indexPath.row){
-            cell.statusLabel.text = @"上次播放";
+//        NSDictionary *config =[[AppDelegate getInstance].usrData getAlbumConfig:self.url];
+//        if ([[config objectForKey:@"currentSongIndex"]intValue]==indexPath.row){
+//            cell.statusLabel.text = @"上次播放";
+//        }
+        Player *p = [[AppDelegate getInstance]player];
+        if ([self.url isEqualToString:p.loadingUrl]){
+            if(p.loadingIndex == indexPath.row){
+                cell.statusLabel.text =@"正在准备";
+            }
         }
+        if ([self.url isEqualToString:p.currentUrl]){
+            if(p.currentIndex == indexPath.row){
+                cell.statusLabel.text =@"正在播放";
+            }
+        }
+        
         return  cell;
     }
     return nil;
@@ -154,7 +170,15 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [[AppDelegate getInstance].player playFromAlbumVC:self.albumData Index:indexPath.row];
+    [[AppDelegate getInstance].player playFromAlbumVC:self.albumData Index:indexPath.row FromBegain:YES];
+    [[self songArrayTV]reloadData];
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Player" bundle:nil];
+    AlbumVC *vc = [sb instantiateViewControllerWithIdentifier:@"PlayerVC"];
+    [self addChildViewController:vc];
+    [self.view addSubview:vc.view];
+}
+
+-(void)updatePerSec{
     [[self songArrayTV]reloadData];
 }
 

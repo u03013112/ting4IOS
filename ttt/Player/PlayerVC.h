@@ -11,6 +11,13 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PlayerVC : UIViewController
+@property (weak, nonatomic) IBOutlet UILabel *url;
+@property (weak, nonatomic) IBOutlet UILabel *albumLabel;
+@property (weak, nonatomic) IBOutlet UILabel *songLabel;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UIButton *playButton;
+@property (weak, nonatomic) IBOutlet UISlider *slider;
 
 @end
 

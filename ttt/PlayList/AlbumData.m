@@ -33,6 +33,10 @@
         if (error == nil) {
             AlbumData *albumInfo = [[AlbumData alloc]init];
             NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+            if(![[dict objectForKey:@"error"] isEqual:@""]){
+                NSLog(@"timeout");
+                return ;
+            }
             albumInfo.url = urlIN;
             albumInfo.mod = mod;
             albumInfo.name = [dict objectForKey:@"title"];

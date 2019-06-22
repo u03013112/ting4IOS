@@ -19,6 +19,7 @@
     if (self = [super init]){
         self.player=[[AVPlayer alloc]init];
         self.isPlaying = NO;
+        self.isLoading = NO;
         [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^(NSTimer * _Nonnull timer) {
             if ([self isPlaying]){
                 [self updatePerSec];
@@ -32,28 +33,39 @@
 -(void)playWithUrl:(NSString *)url{
     AVPlayerItem * item = [[AVPlayerItem alloc]initWithURL:[NSURL URLWithString:url]];
     [[self player] replaceCurrentItemWithPlayerItem:item];
-    [[self player]seekToTime:CMTimeMake([[[AppDelegate getInstance]usrData]getCurrentSeekSec], 1)];
     [[self player]play];
     self.isPlaying = YES;
+    self.isLoading = NO;
+    
+    self.currentUrl = self.loadingUrl;
+    self.currentIndex = self.loadingIndex;
     NSLog(@"play %@\n%@",[[PlayerData getInstance] getCurrentSongName],url);
+    self.mp3Url=url;
 }
 
 -(void)updatePerSec{
     float current = CMTimeGetSeconds([self player].currentItem.currentTime);
     float total = CMTimeGetSeconds([self player].currentItem.duration);
-    
-    if (current) {
+    self.current = current;
+    self.total = total;
+    if (current && total) {
         NSLog(@"%@/%@\n",[NSString stringWithFormat:@"%.f",current],[NSString stringWithFormat:@"%.2f",total]);
         
-        if([[NSString stringWithFormat:@"%.f",current]integerValue]%30==1){//每隔30秒存一次目前进度
-            [[[AppDelegate getInstance]usrData]setCurrentSeekSec:current+2];//防止一读档就又要存档
+        if([[NSString stringWithFormat:@"%.f",current]integerValue]%30==0){//每隔30秒存一次目前进度
+            [[[AppDelegate getInstance]usrData]setCurrentSeekSec:current-1];//防止一读档就又要存档
             [[[AppDelegate getInstance]usrData]saveUsrData];
         }
         
         long startSeekSec = [[[AppDelegate getInstance] usrData]getCurrentStartSeekSec];
         long endSeekSec = [[[AppDelegate getInstance] usrData]getCurrentEndSeekSec];
+        
         if(startSeekSec >0 && current < startSeekSec){
             [[self player] seekToTime:CMTimeMake(startSeekSec, 1)];
+            [self reflushMPCenter];
+        }
+        long curSec = [[[AppDelegate getInstance]usrData]getCurrentSeekSec];
+        if(curSec>0 && current < curSec){
+            [[self player] seekToTime:CMTimeMake(curSec, 1)];
             [self reflushMPCenter];
         }
         if((endSeekSec>0 && current > total-endSeekSec) || current >=total-1){
@@ -62,7 +74,8 @@
         }
     }
     
-    NSLog(@"缓冲时间：%f",[self availableDuration]);
+    self.ava = [self availableDuration];
+    NSLog(@"缓冲时间：%f",self.ava);
     if ([self getCurrentPlayingTime]<[self availableDuration]-5){
         [[self player]playImmediatelyAtRate:[[[AppDelegate getInstance] usrData] getCurrentRate]];
         [self reflushMPCenter];
@@ -164,12 +177,20 @@
     [[MPNowPlayingInfoCenter defaultCenter]setNowPlayingInfo:info];
 }
 
+-(void)playFromAlbumVC:(AlbumData*)ad Index:(long)index FromBegain:(BOOL)isFromeBegain{
+    [PlayerData getInstance].albumData = ad;
+    [self try2Play:ad.mod URL:ad.url Index:index FromBegain:isFromeBegain];
+}
+
 -(void)playFromAlbumVC:(AlbumData*)ad Index:(long)index{
     [PlayerData getInstance].albumData = ad;
     [self try2Play:ad.mod URL:ad.url Index:index FromBegain:NO];
 }
 
 -(void)try2Play:(NSString*)mod URL:(NSString*)url Index:(long)index FromBegain:(BOOL) isFromBegain{
+    self.isLoading = YES;
+    self.loadingUrl = url;
+    self.loadingIndex = index;
     [[PlayerData getInstance]getSongUrl:mod URL:url Index:index FromBegain:isFromBegain];
 }
 -(void)nextSong{
