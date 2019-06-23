@@ -40,6 +40,9 @@
             albumInfo.url = urlIN;
             albumInfo.mod = mod;
             albumInfo.name = [dict objectForKey:@"title"];
+            if (albumInfo.name == nil){
+                albumInfo.name = @"无标题";
+            }
             albumInfo.sounds = [[NSMutableArray alloc]init];
             NSArray *sounds = [dict objectForKey:@"sounds"];
             for (NSDictionary *d in sounds){

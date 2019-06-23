@@ -72,9 +72,10 @@
             [self.slider setMaximumValue:total];
             [self.slider setValue:current];
         }
+        self.albumLabel.text = [[PlayerData getInstance] getCurrentAlbumName];
+        self.songLabel.text = [[PlayerData getInstance] getCurrentSongName];
     }
-    self.albumLabel.text = [[PlayerData getInstance] getCurrentAlbumName];
-    self.songLabel.text = [[PlayerData getInstance] getCurrentSongName];
+    
     self.url.text = self.player.mp3Url;
     
     if(self.player.isLoading){

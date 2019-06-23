@@ -77,6 +77,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="authorLabel" destination="MEY-NZ-p1K" id="IN4-2B-kAs"/>
+                                            <outlet property="modLabel" destination="Ie0-z2-thM" id="sUW-KS-HiD"/>
                                             <outlet property="nameLabel" destination="sDF-8v-rze" id="Sev-kR-vve"/>
                                             <outlet property="soundLabel" destination="h09-yu-8RP" id="A7f-zC-KA3"/>
                                         </connections>

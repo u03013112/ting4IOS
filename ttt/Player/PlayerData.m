@@ -37,6 +37,9 @@ static PlayerData *instance = nil;
 
 -(NSString*)getCurrentSongName{
     if([self albumData]!=nil){
+        if ([self.albumData.url isEqualToString:[[[AppDelegate getInstance]usrData] currentAlbumURL]]==NO){
+            return @"";
+        }
         long sIndex = [[AppDelegate getInstance].usrData getCurrentSongIndex];
         NSDictionary *soundInfo = [[self albumData]sounds][sIndex];
         return [soundInfo objectForKey:@"title"];

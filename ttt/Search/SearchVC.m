@@ -86,6 +86,7 @@
     cell.nameLabel.text = [info objectForKey:@"title"];
     cell.authorLabel.text = [info objectForKey:@"author"];
     cell.soundLabel.text = [info objectForKey:@"sound"];
+    cell.modLabel.text = [info objectForKey:@"mod"];
     
     return cell;
 }

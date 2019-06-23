@@ -18,6 +18,7 @@
 -(id)init{
     if (self = [super init]){
         self.player=[[AVPlayer alloc]init];
+//        [self.player setAutomaticallyWaitsToMinimizeStalling:NO];
         self.isPlaying = NO;
         self.isLoading = NO;
         [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^(NSTimer * _Nonnull timer) {
@@ -39,7 +40,7 @@
     
     self.currentUrl = self.loadingUrl;
     self.currentIndex = self.loadingIndex;
-    NSLog(@"play %@\n%@",[[PlayerData getInstance] getCurrentSongName],url);
+    NSLog(@"play %@\n[%@]",[[PlayerData getInstance] getCurrentSongName],url);
     self.mp3Url=url;
 }
 
@@ -49,7 +50,7 @@
     self.current = current;
     self.total = total;
     if (current && total) {
-        NSLog(@"%@/%@\n",[NSString stringWithFormat:@"%.f",current],[NSString stringWithFormat:@"%.2f",total]);
+//        NSLog(@"%@/%@\n",[NSString stringWithFormat:@"%.f",current],[NSString stringWithFormat:@"%.2f",total]);
         
         if([[NSString stringWithFormat:@"%.f",current]integerValue]%30==0){//每隔30秒存一次目前进度
             [[[AppDelegate getInstance]usrData]setCurrentSeekSec:current-1];//防止一读档就又要存档
@@ -72,6 +73,10 @@
             [self nextSong];
             [self reflushMPCenter];
         }
+    }else{
+//        [[self player]automaticallyWaitsToMinimizeStalling];
+        
+//        NSLog(@"%ld %@",(long)[[[self player]currentItem]status],[[self player]reasonForWaitingToPlay]);
     }
     
     self.ava = [self availableDuration];
