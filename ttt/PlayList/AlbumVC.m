@@ -133,6 +133,7 @@
     long index = [[[ud getAlbumConfig:self.url]objectForKey:@"currentSongIndex"]intValue];
     [[AppDelegate getInstance].player playFromAlbumVC:self.albumData Index:index];
     [[self songArrayTV]reloadData];
+    self.tabBarController.selectedIndex =  1;
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
@@ -172,10 +173,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [[AppDelegate getInstance].player playFromAlbumVC:self.albumData Index:indexPath.row FromBegain:YES];
     [[self songArrayTV]reloadData];
-    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Player" bundle:nil];
-    AlbumVC *vc = [sb instantiateViewControllerWithIdentifier:@"PlayerVC"];
-    [self addChildViewController:vc];
-    [self.view addSubview:vc.view];
+//    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Player" bundle:nil];
+//    AlbumVC *vc = [sb instantiateViewControllerWithIdentifier:@"PlayerVC"];
+//    [self addChildViewController:vc];
+//    [self.view addSubview:vc.view];
+    self.tabBarController.selectedIndex =  1;
 }
 
 -(void)updatePerSec{

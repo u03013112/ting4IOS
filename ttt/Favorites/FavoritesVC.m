@@ -101,10 +101,11 @@
                 [[AppDelegate getInstance].player playFromAlbumVC:self.albumData Index:index];
             }
             
-            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Player" bundle:nil];
-            AlbumVC *vc = [sb instantiateViewControllerWithIdentifier:@"PlayerVC"];
-            [self addChildViewController:vc];
-            [self.view addSubview:vc.view];
+//            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Player" bundle:nil];
+//            AlbumVC *vc = [sb instantiateViewControllerWithIdentifier:@"PlayerVC"];
+//            [self addChildViewController:vc];
+//            [self.view addSubview:vc.view];
+            self.tabBarController.selectedIndex =  1;
         }
     }
 }

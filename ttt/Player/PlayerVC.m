@@ -34,10 +34,10 @@
 - (IBAction)didPlayButtonClicked:(id)sender {
     if([self.player isPlaying]){
         [self.player pause];
-        [self.playButton setTitle:@"三角" forState:UIControlStateNormal];
+        [self.playButton setTitle:@"播放" forState:UIControlStateNormal];
     }else{
         [self.player resume];
-        [self.playButton setTitle:@"竖竖" forState:UIControlStateNormal];
+        [self.playButton setTitle:@"暂停" forState:UIControlStateNormal];
     }
 }
 
@@ -66,6 +66,11 @@
     int current = (int)self.player.current;
     int total = (int)self.player.total;
     if (current>0 && total>0){
+        if([self.player isPlaying]){
+            [self.playButton setTitle:@"暂停" forState:UIControlStateNormal];
+        }else{
+            [self.playButton setTitle:@"播放" forState:UIControlStateNormal];
+        }
         self.timeLabel.text = [NSString stringWithFormat:@"%02d:%02d/%02d:%02d",current/60,current%60,total/60,total%60];
         if (self.isSliding == NO){
             [self.slider setMinimumValue:0];
