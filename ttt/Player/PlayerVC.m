@@ -9,13 +9,26 @@
 #import "PlayerVC.h"
 #import "../AppDelegate.h"
 #import "PlayerData.h"
+#import "ScheduleCV.h"
 
-@interface PlayerVC ()
+@interface PlayerVC ()<AlbumDataDelegate>
 @property (weak)Player *player;
 @property BOOL isSliding;
+@property (weak, nonatomic) IBOutlet UILabel *scheduleLabel;
+
+@property (strong,nonatomic) AlbumData *albumData;
+
 @end
 
 @implementation PlayerVC
+
+-(void)didAlbumDataRecv:(AlbumData*)data{
+    
+    self.albumData = data;
+    UsrData *ud = [[AppDelegate getInstance]usrData];
+    long index = [[[ud getAlbumConfig:self.albumData.url]objectForKey:@"currentSongIndex"]intValue];
+    [[AppDelegate getInstance].player playFromAlbumVC:self.albumData Index:index];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -24,6 +37,16 @@
         [self updatePerSec];
     }];
     self.isSliding = NO;
+    
+    if ([PlayerData getInstance].albumData == nil){
+        //    尝试播放上次播放内容
+        UsrData *ud = [[AppDelegate getInstance]usrData];
+        if (ud.currentAlbumURL != nil && [ud.currentAlbumURL isEqualToString:@""]==NO){
+            self.url.text = @"加载中...";
+            [AlbumData getAlbumInfoByURL:ud.currentAlbumURL mod:ud.mod delegate:self];
+        }
+        
+    }
 }
 
 - (IBAction)didblackButtonClicked:(id)sender {
@@ -93,6 +116,26 @@
             self.statusLabel.text=[NSString stringWithFormat:@"缓冲了%02d:%02d",ava/60,ava%60];
         }
     }
+    
+    if([[[AppDelegate getInstance]player] isPlaying]){
+        [[self playButton]setTitle:@"暂停" forState:UIControlStateNormal];
+    }else{
+        [[self playButton]setTitle:@"继续播放" forState:UIControlStateNormal];
+    }
+    
+    long s = [[[AppDelegate getInstance]player]scheduleSec];
+    if (s>0){
+        [self scheduleLabel].text = [NSString stringWithFormat:@"倒计时 %02ld:%02ld",s/60,s%60];
+    }else{
+        [self scheduleLabel].text = @"";
+    }
+}
+
+- (IBAction)didScheduleButtonClicked:(id)sender {
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Player" bundle:nil];
+    ScheduleCV *vc = [sb instantiateViewControllerWithIdentifier:@"ScheduleCV"];
+    [self addChildViewController:vc];
+    [self.view addSubview:vc.view];
 }
 
 @end

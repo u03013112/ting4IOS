@@ -188,6 +188,9 @@
 }
 
 -(void)playFromAlbumVC:(AlbumData*)ad Index:(long)index{
+    if(ad.url == nil || [ad.url isEqualToString:@""]){
+        return;
+    }
     [PlayerData getInstance].albumData = ad;
     [self try2Play:ad.mod URL:ad.url Index:index FromBegain:NO];
 }

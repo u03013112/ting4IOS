@@ -101,9 +101,11 @@
 
 - (IBAction)didBackButtonClicked:(id)sender {
     NSLog(@"didBackButtonClicked");
-    [self dismissViewControllerAnimated:YES completion:^{
-        //
-    }];
+//    [self dismissViewControllerAnimated:YES completion:^{
+//        //
+//    }];
+    [self.view removeFromSuperview];
+    [self removeFromParentViewController];
 }
 
 - (IBAction)didSlider1Changed:(id)sender {
@@ -133,7 +135,12 @@
     long index = [[[ud getAlbumConfig:self.url]objectForKey:@"currentSongIndex"]intValue];
     [[AppDelegate getInstance].player playFromAlbumVC:self.albumData Index:index];
     [[self songArrayTV]reloadData];
-    self.tabBarController.selectedIndex =  1;
+    
+    self.parentViewController.tabBarController.selectedIndex =  1;
+//    [self dismissViewControllerAnimated:YES completion:^{
+//    }];
+    [self.view removeFromSuperview];
+    [self removeFromParentViewController];
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
@@ -177,7 +184,9 @@
 //    AlbumVC *vc = [sb instantiateViewControllerWithIdentifier:@"PlayerVC"];
 //    [self addChildViewController:vc];
 //    [self.view addSubview:vc.view];
-    self.tabBarController.selectedIndex =  1;
+    self.parentViewController.tabBarController.selectedIndex =  1;
+    [self.view removeFromSuperview];
+    [self removeFromParentViewController];
 }
 
 -(void)updatePerSec{
