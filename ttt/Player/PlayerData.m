@@ -53,6 +53,8 @@ static PlayerData *instance = nil;
     }else{
         self.isReady = NO;
     }
+    self.nextUrl = nil;
+    
     NSURL *u = [NSURL URLWithString:@"http://frp.u03013112.win:18004/getmp3url"];
     NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:u];
     
@@ -74,10 +76,19 @@ static PlayerData *instance = nil;
             NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
             if (error !=nil){
                 NSLog(@"%@",error);
+                // 手机网络有问题，或者服务器挂了，拼命重试
+                [self getSongUrl:mod URL:url Index:index FromBegain:isFromBegain];
                 return ;
             }
-            if(![[dict objectForKey:@"error"] isEqual:@""]){
+            if([[dict objectForKey:@"error"] isEqual:@"timeout"]){
                 NSLog(@"timeout");
+                //服务器连不上听书网了，重试到死
+                [self getSongUrl:mod URL:url Index:index FromBegain:isFromBegain];
+                return ;
+            }
+            if([[dict objectForKey:@"error"] isEqual:@"over"]){
+                NSLog(@"timeout");
+                //索引错了
                 return ;
             }
             NSString *songUrl = [dict objectForKey:@"url"];
@@ -95,38 +106,57 @@ static PlayerData *instance = nil;
                 //call player play this url,dont ask why
                 [[[AppDelegate getInstance]player]playWithUrl:songUrl];
             });
-            
-//            for next
-            [postBodyDict setObject:[NSNumber numberWithInteger:index+1] forKey:@"index"];
-            NSData *postData = [NSJSONSerialization dataWithJSONObject:postBodyDict options:NSJSONWritingPrettyPrinted error:nil];
-            
-            [mutableRequest setHTTPMethod:@"POST"];
-            [mutableRequest setHTTPBody:postData];
-            [mutableRequest setAllHTTPHeaderFields:head];
-            
-            NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:mutableRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                if (error == nil) {
-                    NSError *error;
-                    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
-                    if (error !=nil){
-                        NSLog(@"%@",error);
-                        return ;
-                    }
-                    if(![[dict objectForKey:@"error"] isEqual:@""]){
-                        NSLog(@"timeout");
-                        return ;
-                    }
-                    NSString *songUrl = [dict objectForKey:@"url"];
-                    NSLog(@"nextUrl:%@",songUrl);
-                    self.nextUrl = songUrl;
-                }
-            }];
-            [task resume];
+            [self getNextSongUrl:mod URL:url Index:index];
         }
     }];
-    
     [task resume];
 }
+
+//index 传入当前index，在这里面会+1的
+-(void)getNextSongUrl:(NSString*)mod URL:(NSString*)url Index:(long)index{
+    NSURL *u = [NSURL URLWithString:@"http://frp.u03013112.win:18004/getmp3url"];
+    NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:u];
+    
+    NSDictionary *head = [[NSDictionary alloc]initWithObjectsAndKeys:@"application/json",@"Content-Type", nil];
+    NSMutableDictionary *postBodyDict = [[NSMutableDictionary alloc]init];
+    
+    [postBodyDict setObject:mod forKey:@"mod"];
+    [postBodyDict setObject:url forKey:@"url"];
+    [postBodyDict setObject:[NSNumber numberWithInteger:index+1] forKey:@"index"];
+    
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:postBodyDict options:NSJSONWritingPrettyPrinted error:nil];
+    
+    [mutableRequest setHTTPMethod:@"POST"];
+    [mutableRequest setHTTPBody:postData];
+    [mutableRequest setAllHTTPHeaderFields:head];
+    
+    NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:mutableRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error == nil) {
+            NSError *error;
+            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+            if (error !=nil){
+                NSLog(@"%@",error);
+//                下一首就不重试了
+                return ;
+            }
+            if([[dict objectForKey:@"error"] isEqual:@"over"]){
+                NSLog(@"over");
+                self.nextUrl = nil;
+                return ;
+            }
+            NSString *songUrl = [dict objectForKey:@"url"];
+            NSLog(@"nextUrl:%@",songUrl);
+            self.nextUrl = songUrl;
+        }
+    }];
+    [task resume];
+}
+
+
+-(NSString *)getNextSongUrl{
+    return self.nextUrl;
+}
+
 - (void)didAlbumDataRecv:(AlbumData *)data {
     self.albumData = data;
 }

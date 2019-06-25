@@ -27,6 +27,7 @@
             }
         }];
         [self initContorller];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(nextSong) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     }
     return self;
 }
@@ -80,7 +81,7 @@
     }
     
     self.ava = [self availableDuration];
-    NSLog(@"缓冲时间：%f",self.ava);
+//    NSLog(@"缓冲时间：%f",self.ava);
     if ([self getCurrentPlayingTime]<[self availableDuration]-5){
         [[self player]playImmediatelyAtRate:[[[AppDelegate getInstance] usrData] getCurrentRate]];
         [self reflushMPCenter];
@@ -205,7 +206,17 @@
     UsrData *ud = [[AppDelegate getInstance]usrData];
     long index = [ud getCurrentSongIndex];
     index++;
-    [self try2Play:[PlayerData getInstance].albumData.mod URL:[PlayerData getInstance].albumData.url Index:index FromBegain:YES];
+//    如果已经缓存了下一首的url直接用
+    NSString *nextUrl = [[PlayerData getInstance]getNextSongUrl];
+    if (nextUrl == nil){
+        [self try2Play:[PlayerData getInstance].albumData.mod URL:[PlayerData getInstance].albumData.url Index:index FromBegain:YES];
+    }else{
+        [ud setCurrentSongIndex:index];
+        [ud setCurrentSeekSec:0];
+        [self playWithUrl:nextUrl];
+        PlayerData *pd = [PlayerData getInstance];
+        [pd getNextSongUrl:pd.albumData.mod URL:pd.albumData.url Index:[ud getCurrentSongIndex]];
+    }
 }
 -(void)prevSong{
     UsrData *ud = [[AppDelegate getInstance]usrData];

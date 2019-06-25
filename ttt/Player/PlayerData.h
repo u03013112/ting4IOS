@@ -19,7 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
 -(NSString*)getCurrentSongName;
 
 -(void)getSongUrl:(NSString*)mod URL:(NSString*)url Index:(long)index FromBegain:(BOOL) isFromBegain;
-
+//getNextSongUrl只是提前缓存下一首的url
+-(void)getNextSongUrl:(NSString*)mod URL:(NSString*)url Index:(long)index;
+//getNextSongUrl 如果下一首有缓存就用缓存的urlm，否则返回nil
+-(NSString *)getNextSongUrl;
 @end
 
 NS_ASSUME_NONNULL_END
