@@ -106,6 +106,14 @@
     self.isPlaying = YES;
 }
 
+-(void)playOrPause{
+    if (self.isPlaying == YES){
+        [self pause];
+    }else{
+        [self resume];
+    }
+}
+
 /**
  *  返回 当前 视频 播放时长
  */
@@ -140,6 +148,12 @@
     [commandCenter.pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
         NSLog(@"remote_暂停");
         [self pause];
+        return MPRemoteCommandHandlerStatusSuccess;
+    }];
+    commandCenter.togglePlayPauseCommand.enabled = YES;
+    [commandCenter.togglePlayPauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+        NSLog(@"耳机线控");
+        [self playOrPause];
         return MPRemoteCommandHandlerStatusSuccess;
     }];
 //    NEXT
