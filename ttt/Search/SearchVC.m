@@ -102,8 +102,8 @@
     AlbumVC *vc = [sb instantiateViewControllerWithIdentifier:@"AlbumMain"];
     vc.url = [data objectForKey:@"url"];
     vc.mod = [data objectForKey:@"mod"];
-    [self presentViewController:vc animated:YES completion:^{
-        //
-    }];
+    
+    [self addChildViewController:vc];
+    [self.view addSubview:vc.view];
 }
 @end
