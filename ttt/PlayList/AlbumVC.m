@@ -39,6 +39,17 @@
     [self.songArrayTV setContentOffset:CGPointMake(0, 44*[[[[AppDelegate getInstance].usrData getAlbumConfig:self.url]objectForKey:@"currentSongIndex"]intValue])];
     [self ntitle].title=self.albumData.name;
     [self.c removeFromSuperview];
+    [self.playButton setTitle:@"继续收听" forState:UIControlStateNormal];
+    
+    [[self favButton]setTitle:@"收藏" forState:UIControlStateNormal];
+    for (NSDictionary *album in [AppDelegate getInstance].favData.data) {
+        if([album objectForKey:@"url"] == self.url){
+            [[self favButton]setTitle:@"取消收藏" forState:UIControlStateNormal];
+            break;
+        }
+    }
+    [self.favButton setEnabled:YES];
+    [self.playButton setEnabled:YES];
 }
 - (IBAction)didFavoritButtonClicked:(id)sender {
     BOOL isFaved = NO;
@@ -85,16 +96,14 @@
     [[self rateSlider]setValue:[[config objectForKey:@"rate"]floatValue]];
     [self rateLabel].text = [NSString stringWithFormat:@"%.2fx",self.rateSlider.value];
     
-    for (NSDictionary *album in [AppDelegate getInstance].favData.data) {
-        if([album objectForKey:@"url"] == self.url){
-            [[self favButton]setTitle:@"取消收藏" forState:UIControlStateNormal];
-            break;
-        }
-    }
-    
     [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^(NSTimer * _Nonnull timer) {
         [self updatePerSec];
     }];
+    
+    [self.favButton setTitle:@"加载中" forState:UIControlStateDisabled];
+    [self.playButton setTitle:@"加载中" forState:UIControlStateDisabled];
+    [self.favButton setEnabled:NO];
+    [self.playButton setEnabled:NO];
 }
 
 - (IBAction)didBackButtonClicked:(id)sender {
@@ -135,8 +144,7 @@
     [[self songArrayTV]reloadData];
     
     self.parentViewController.tabBarController.selectedIndex =  1;
-//    [self dismissViewControllerAnimated:YES completion:^{
-//    }];
+
     [self.view removeFromSuperview];
     [self removeFromParentViewController];
 }
@@ -147,10 +155,7 @@
         NSDictionary *dict =[[self albumData]sounds][indexPath.row];
         cell.songLabel.text = [dict objectForKey:@"title"];
         cell.statusLabel.text = @"";
-//        NSDictionary *config =[[AppDelegate getInstance].usrData getAlbumConfig:self.url];
-//        if ([[config objectForKey:@"currentSongIndex"]intValue]==indexPath.row){
-//            cell.statusLabel.text = @"上次播放";
-//        }
+
         Player *p = [[AppDelegate getInstance]player];
         if ([self.url isEqualToString:p.loadingUrl]){
             if(p.loadingIndex == indexPath.row){
@@ -178,10 +183,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [[AppDelegate getInstance].player playFromAlbumVC:self.albumData Index:indexPath.row FromBegain:YES];
     [[self songArrayTV]reloadData];
-//    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Player" bundle:nil];
-//    AlbumVC *vc = [sb instantiateViewControllerWithIdentifier:@"PlayerVC"];
-//    [self addChildViewController:vc];
-//    [self.view addSubview:vc.view];
     self.parentViewController.tabBarController.selectedIndex =  1;
     [self.view removeFromSuperview];
     [self removeFromParentViewController];

@@ -18,6 +18,7 @@
 -(id)init{
     if (self = [super init]){
         self.player=[[AVPlayer alloc]init];
+        self.player2=[[AVPlayer alloc]init];
 //        [self.player setAutomaticallyWaitsToMinimizeStalling:NO];
         self.isPlaying = NO;
         self.isLoading = NO;
@@ -36,13 +37,24 @@
     AVPlayerItem * item = [[AVPlayerItem alloc]initWithURL:[NSURL URLWithString:url]];
     [[self player] replaceCurrentItemWithPlayerItem:item];
     [[self player]play];
+    
     self.isPlaying = YES;
     self.isLoading = NO;
     
     self.currentUrl = self.loadingUrl;
     self.currentIndex = self.loadingIndex;
     NSLog(@"play %@\n[%@]",[[PlayerData getInstance] getCurrentSongName],url);
-    self.mp3Url=url;
+//    self.mp3Url=url;
+}
+
+//直接切换下一个播放器，为了能够一次缓冲两集，解决网络波动
+-(void)playNextPlayer{
+    [self.player pause];
+    self.player = self.player2;
+    self.player2 = [[AVPlayer alloc]init];
+    [self.player play];
+    self.currentUrl = [[PlayerData getInstance]getNextSongUrl];
+    self.currentIndex ++;
 }
 
 -(void)updatePerSec{
@@ -80,12 +92,14 @@
 //        NSLog(@"%ld %@",(long)[[[self player]currentItem]status],[[self player]reasonForWaitingToPlay]);
     }
     
-    self.ava = [self availableDuration];
-//    NSLog(@"缓冲时间：%f",self.ava);
-    if ([self getCurrentPlayingTime]<[self availableDuration]-5){
+    self.ava = [self availableDuration:self.player];
+    
+    if ([self getCurrentPlayingTime]<[self availableDuration:self.player]-5){
         [[self player]playImmediatelyAtRate:[[[AppDelegate getInstance] usrData] getCurrentRate]];
         [self reflushMPCenter];
     }
+    
+//    NSLog(@"缓冲时间：%f",[self availableDuration:self.player2]);
     
     if([self scheduleSec]>0){
         self.scheduleSec --;
@@ -124,8 +138,8 @@
 /**
  *  返回 当前 视频 缓存时长
  */
-- (NSTimeInterval)availableDuration{
-    NSArray *loadedTimeRanges = [[self.player currentItem] loadedTimeRanges];
+- (NSTimeInterval)availableDuration:(AVPlayer *)player{
+    NSArray *loadedTimeRanges = [[player currentItem] loadedTimeRanges];
     CMTimeRange timeRange = [loadedTimeRanges.firstObject CMTimeRangeValue];// 获取缓冲区域
     float startSeconds = CMTimeGetSeconds(timeRange.start);
     float durationSeconds = CMTimeGetSeconds(timeRange.duration);
@@ -227,9 +241,9 @@
     }else{
         [ud setCurrentSongIndex:index];
         [ud setCurrentSeekSec:0];
-        [self playWithUrl:nextUrl];
+        [self playNextPlayer];
         PlayerData *pd = [PlayerData getInstance];
-        [pd getNextSongUrl:pd.albumData.mod URL:pd.albumData.url Index:[ud getCurrentSongIndex]];
+        [pd getNextSongUrl:pd.albumData.mod URL:pd.albumData.url Index:index];
     }
 }
 -(void)prevSong{

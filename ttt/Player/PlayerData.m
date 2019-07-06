@@ -145,8 +145,14 @@ static PlayerData *instance = nil;
                 return ;
             }
             NSString *songUrl = [dict objectForKey:@"url"];
-            NSLog(@"nextUrl:%@",songUrl);
+            
+            NSLog(@"nextUrl:%@",dict);
+            
             self.nextUrl = songUrl;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                AVPlayerItem * item = [[AVPlayerItem alloc]initWithURL:[NSURL URLWithString:songUrl]];
+                [[[AppDelegate getInstance]player].player2 replaceCurrentItemWithPlayerItem:item];
+            });
         }
     }];
     [task resume];

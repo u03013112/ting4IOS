@@ -18,12 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property BOOL isLoading;//正在获取URL中
 
 @property (strong, nonatomic) AVPlayer *player;
+@property (strong, nonatomic) AVPlayer *player2;
 @property long scheduleSec;
 
 //正在播放的信息
 @property (strong,nonatomic)NSString *currentUrl;
 @property long currentIndex;
-@property (strong,nonatomic)NSString *mp3Url;
+//@property (strong,nonatomic)NSString *mp3Url;
 //正在准备的信息
 @property (strong,nonatomic)NSString *loadingUrl;
 @property long loadingIndex;

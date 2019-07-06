@@ -104,7 +104,7 @@
         self.songLabel.text = [[PlayerData getInstance] getCurrentSongName];
     }
     
-    self.url.text = self.player.mp3Url;
+    self.url.text = self.player.currentUrl;
     
     if(self.player.isLoading){
         self.statusLabel.text=@"正在准备播放";
