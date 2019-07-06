@@ -42,21 +42,19 @@
 }
 - (IBAction)didFavoritButtonClicked:(id)sender {
     BOOL isFaved = NO;
-    UsrData *usrData = [AppDelegate getInstance].usrData;
-    for (NSDictionary *album in [usrData albumFavorites]) {
-        if([album objectForKey:@"url"] == self.url){
-            [[usrData albumFavorites]removeObject:album];
+    
+    for (NSDictionary *album in [AppDelegate getInstance].favData.data) {
+        if([[album objectForKey:@"url"] isEqualToString:self.url]){
+            [[AppDelegate getInstance].favData delFav:self.url];
             [[self favButton]setTitle:@"收藏" forState:UIControlStateNormal];
             isFaved = YES;
             break;
         }
     }
     if (isFaved == NO){
-        NSMutableDictionary *album = [[NSMutableDictionary alloc]initWithObjectsAndKeys:self.albumData.name,@"title",self.mod,@"mod",self.url,@"url", nil];
-        [[usrData albumFavorites]addObject:album];
+        [[AppDelegate getInstance].favData addFav:self.albumData.name Sound:@"" Mod:self.mod Url:self.url];
         [[self favButton]setTitle:@"取消收藏" forState:UIControlStateNormal];
     }
-    [usrData saveUsrData];
 }
 
 - (void)viewDidLoad {
@@ -87,7 +85,7 @@
     [[self rateSlider]setValue:[[config objectForKey:@"rate"]floatValue]];
     [self rateLabel].text = [NSString stringWithFormat:@"%.2fx",self.rateSlider.value];
     
-    for (NSDictionary *album in [usrData albumFavorites]) {
+    for (NSDictionary *album in [AppDelegate getInstance].favData.data) {
         if([album objectForKey:@"url"] == self.url){
             [[self favButton]setTitle:@"取消收藏" forState:UIControlStateNormal];
             break;

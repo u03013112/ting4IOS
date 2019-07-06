@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
+
 @interface AppDelegate ()
 
 @end
@@ -30,7 +31,10 @@ static AppDelegate *instance = nil;
     self.player = [[Player alloc]init];
     self.usrData = [[UsrData alloc]init];
     [self.usrData loadUsrData];
-    [self test];
+    
+    self.favData = [[FavoritesData alloc]init];
+    [self.favData load];
+    
     // 告诉app支持后台播放
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];

@@ -9,13 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "Player/Player.h"
 #import "UsrData.h"
+#import "Favorites/FavoritesData.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong,nonatomic) Player *player;
 @property (strong,nonatomic) UsrData *usrData;
-
+@property (strong,nonatomic) FavoritesData *favData;
 + (AppDelegate *)getInstance;
 @end
 

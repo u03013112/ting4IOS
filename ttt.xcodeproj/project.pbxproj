@@ -15,6 +15,7 @@
 		A7269F7A22A90A8F00E33D93 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A7269F7922A90A8F00E33D93 /* main.m */; };
 		A72FE34122B5517200AB44F9 /* ScheduleCV.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FE34022B5517200AB44F9 /* ScheduleCV.m */; };
 		A73A2CB722BBEAF6008B697A /* FavoritesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A73A2CB622BBEAF6008B697A /* FavoritesVC.m */; };
+		A758E25A22D05D6E004ED7EA /* FavoritesData.m in Sources */ = {isa = PBXBuildFile; fileRef = A758E25922D05D6E004ED7EA /* FavoritesData.m */; };
 		A78B9D4C22A981A300DA73D7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A78B9D4B22A981A300DA73D7 /* AVFoundation.framework */; };
 		A78B9D8122AAF59100DA73D7 /* AlbumData.m in Sources */ = {isa = PBXBuildFile; fileRef = A78B9D8022AAF59100DA73D7 /* AlbumData.m */; };
 		A78B9D8422AC0CFC00DA73D7 /* Album.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A78B9D8322AC0CFC00DA73D7 /* Album.storyboard */; };
@@ -45,6 +46,8 @@
 		A72FE34022B5517200AB44F9 /* ScheduleCV.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScheduleCV.m; sourceTree = "<group>"; };
 		A73A2CB522BBEAF6008B697A /* FavoritesVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FavoritesVC.h; sourceTree = "<group>"; };
 		A73A2CB622BBEAF6008B697A /* FavoritesVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FavoritesVC.m; sourceTree = "<group>"; };
+		A758E25822D05D6E004ED7EA /* FavoritesData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FavoritesData.h; sourceTree = "<group>"; };
+		A758E25922D05D6E004ED7EA /* FavoritesData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FavoritesData.m; sourceTree = "<group>"; };
 		A78B9D4B22A981A300DA73D7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		A78B9D8022AAF59100DA73D7 /* AlbumData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlbumData.m; sourceTree = "<group>"; };
 		A78B9D8222AAF5A600DA73D7 /* AlbumData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlbumData.h; sourceTree = "<group>"; };
@@ -126,6 +129,8 @@
 			children = (
 				A73A2CB522BBEAF6008B697A /* FavoritesVC.h */,
 				A73A2CB622BBEAF6008B697A /* FavoritesVC.m */,
+				A758E25822D05D6E004ED7EA /* FavoritesData.h */,
+				A758E25922D05D6E004ED7EA /* FavoritesData.m */,
 			);
 			path = Favorites;
 			sourceTree = "<group>";
@@ -270,6 +275,7 @@
 				A78B9D8E22AC2A0900DA73D7 /* PlayerVC.m in Sources */,
 				A72FE34122B5517200AB44F9 /* ScheduleCV.m in Sources */,
 				A78B9D9422ACEF7600DA73D7 /* PlayerData.m in Sources */,
+				A758E25A22D05D6E004ED7EA /* FavoritesData.m in Sources */,
 				A7FE94EE22BA4AFB00857FB9 /* SearchCell.m in Sources */,
 				A78B9D8122AAF59100DA73D7 /* AlbumData.m in Sources */,
 			);
