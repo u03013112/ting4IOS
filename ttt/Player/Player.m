@@ -11,6 +11,15 @@
 #import "../AppDelegate.h"
 #import <MediaPlayer/MediaPlayer.h>
 @interface Player()
+@property NSUInteger n;
+
+@property BOOL isFromBegain;
+@property NSUInteger loadingID; //正要播放的id
+
+
+@property NSUInteger nextID; //下一集的id
+
+
 @end
 
 @implementation Player
@@ -19,7 +28,6 @@
     if (self = [super init]){
         self.player=[[AVPlayer alloc]init];
         self.player2=[[AVPlayer alloc]init];
-//        [self.player setAutomaticallyWaitsToMinimizeStalling:NO];
         self.isPlaying = NO;
         self.isLoading = NO;
         [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^(NSTimer * _Nonnull timer) {
@@ -29,6 +37,13 @@
         }];
         [self initContorller];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(nextSong) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+        self.n = 0;
+        self.loadingID = 0;
+        self.nextID = 0;
+        self.isFromBegain = NO;
+        
+        self.currentUrl = @"";
+        self.nextURL = @"";
     }
     return self;
 }
@@ -43,7 +58,7 @@
     
     self.currentUrl = self.loadingUrl;
     self.currentIndex = self.loadingIndex;
-    NSLog(@"play %@\n[%@]",[[PlayerData getInstance] getCurrentSongName],url);
+    NSLog(@"play %@\n[%@]",[[PlayerData getInstance] getSongName:self.currentIndex],url);
 //    self.mp3Url=url;
 }
 
@@ -53,7 +68,7 @@
     self.player = self.player2;
     self.player2 = [[AVPlayer alloc]init];
     [self.player play];
-    self.currentUrl = [[PlayerData getInstance]getNextSongUrl];
+    self.currentUrl = self.nextURL;
     self.currentIndex ++;
 }
 
@@ -62,6 +77,8 @@
     float total = CMTimeGetSeconds([self player].currentItem.duration);
     self.current = current;
     self.total = total;
+    
+    self.total2 = CMTimeGetSeconds([self player2].currentItem.duration);
     if (current && total) {
 //        NSLog(@"%@/%@\n",[NSString stringWithFormat:@"%.f",current],[NSString stringWithFormat:@"%.2f",total]);
         
@@ -93,6 +110,7 @@
     }
     
     self.ava = [self availableDuration:self.player];
+    self.ava2 = [self availableDuration:self.player2];
     
     if ([self getCurrentPlayingTime]<[self availableDuration:self.player]-5){
         [[self player]playImmediatelyAtRate:[[[AppDelegate getInstance] usrData] getCurrentRate]];
@@ -203,7 +221,7 @@
     float total = CMTimeGetSeconds([self player].currentItem.duration);
     
     NSMutableDictionary * info = [NSMutableDictionary dictionary];
-    [info setObject:[[PlayerData getInstance] getCurrentSongName] forKey:MPMediaItemPropertyTitle];
+    [info setObject:[[PlayerData getInstance] getSongName:self.currentIndex] forKey:MPMediaItemPropertyTitle];
     [info setObject:[[PlayerData getInstance] getCurrentAlbumName] forKey:MPMediaItemPropertyAlbumTitle];
     [info setObject:@(current) forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
     [info setObject:@(total) forKey:MPMediaItemPropertyPlaybackDuration];
@@ -225,31 +243,82 @@
 }
 
 -(void)try2Play:(NSString*)mod URL:(NSString*)url Index:(long)index FromBegain:(BOOL) isFromBegain{
+    UsrData *ud = [[AppDelegate getInstance]usrData];
     self.isLoading = YES;
     self.loadingUrl = url;
     self.loadingIndex = index;
-    [[PlayerData getInstance]getSongUrl:mod URL:url Index:index FromBegain:isFromBegain];
+    
+    [ud setMod:mod];
+    [ud setCurrentSongIndex:index];
+    [ud setCurrentAlbumURL:url];
+    
+    self.isFromBegain = isFromBegain;
+//    获取当前url
+    self.loadingID = self.n ++;
+    [[PlayerData getInstance]getSongUrl:mod URL:url Index:index n:self.loadingID];
+    self.currentUrl = @"";
+    self.loadingRetryTimes = 0;
+//    获取下一首url
+    self.nextID = self.n ++;
+    [[PlayerData getInstance]getSongUrl:mod URL:url Index:index+1 n:self.nextID];
+    self.nextURL = @"";
+    self.nextRetryTimes = 0;
 }
 -(void)nextSong{
+    if ([self canNext]==NO){
+        return;
+    }
     UsrData *ud = [[AppDelegate getInstance]usrData];
     long index = [ud getCurrentSongIndex];
     index++;
-//    如果已经缓存了下一首的url直接用
-    NSString *nextUrl = [[PlayerData getInstance]getNextSongUrl];
-    if (nextUrl == nil){
-        [self try2Play:[PlayerData getInstance].albumData.mod URL:[PlayerData getInstance].albumData.url Index:index FromBegain:YES];
-    }else{
-        [ud setCurrentSongIndex:index];
-        [ud setCurrentSeekSec:0];
-        [self playNextPlayer];
-        PlayerData *pd = [PlayerData getInstance];
-        [pd getNextSongUrl:pd.albumData.mod URL:pd.albumData.url Index:index];
-    }
+
+    [ud setCurrentSongIndex:index];
+    [ud setCurrentSeekSec:0];
+    [self playNextPlayer];
+
+    //    获取下一首url
+    self.nextID = self.n ++;
+    AlbumData *ad = [PlayerData getInstance].albumData;
+    [[PlayerData getInstance]getSongUrl:ad.mod URL:ad.url Index:index+1 n:self.nextID];
+    self.nextURL = @"";
+    self.nextRetryTimes = 0;
 }
 -(void)prevSong{
     UsrData *ud = [[AppDelegate getInstance]usrData];
     long index = [ud getCurrentSongIndex];
     index--;
     [self try2Play:[PlayerData getInstance].albumData.mod URL:[PlayerData getInstance].albumData.url Index:index FromBegain:YES];
+}
+
+-(void)getUrlRetry:(NSUInteger)n{
+    if (n == self.loadingID){
+        self.loadingRetryTimes ++;
+    }
+    if (n == self.nextID){
+        self.nextRetryTimes ++;
+    }
+}
+
+-(void)getUrlOver:(NSUInteger)n{
+//
+}
+-(void)getUrlSuccess:(NSUInteger)n URL:(NSString*)url{
+    if (n == self.loadingID){
+        if (self.isFromBegain==YES){
+            [[AppDelegate getInstance].usrData setCurrentSeekSec:0];
+        }
+        [self playWithUrl:url];
+    }
+    if (n == self.nextID){
+        self.nextURL = url;
+        AVPlayerItem * item = [[AVPlayerItem alloc]initWithURL:[NSURL URLWithString:url]];
+        [[[AppDelegate getInstance]player].player2 replaceCurrentItemWithPlayerItem:item];
+    }
+}
+-(BOOL)canNext{
+    if ([self availableDuration:self.player2] >10.0f){
+        return YES;
+    }
+    return NO;
 }
 @end

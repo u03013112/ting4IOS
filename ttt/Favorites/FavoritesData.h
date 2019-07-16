@@ -19,11 +19,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong)NSMutableArray *data;
 //KEY：@"tile" @"sound" @"mod" @"url"
+//希望存更多的东西，@"currentIndex" @"totalCount" @"currentSeed"
 
 @property (strong)NSMutableArray *delegateArray;
 
 -(void)addFav:(NSString*)title Sound:(NSString*)sound Mod:(NSString*)mod Url:(NSString*)url;
 -(void)delFav:(NSString*)url;
+
+-(void)setCurrentIndexForAlbumUrl:(NSString*)url index:(int)index;
+-(int)getCurrentIndexForAlbumUrl:(NSString*)url;
+
+-(void)setTotalCountForAlbumUrl:(NSString*)url count:(NSUInteger)count;
+-(int)getTotalCountForAlbumUrl:(NSString*)url;
 
 -(void)save;
 -(void)load;

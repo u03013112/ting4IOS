@@ -24,12 +24,16 @@ NS_ASSUME_NONNULL_BEGIN
 //正在播放的信息
 @property (strong,nonatomic)NSString *currentUrl;
 @property long currentIndex;
-//@property (strong,nonatomic)NSString *mp3Url;
-//正在准备的信息
-@property (strong,nonatomic)NSString *loadingUrl;
-@property long loadingIndex;
 
 @property float current,total,ava;
+@property float total2,ava2;
+
+@property NSString *loadingUrl;
+@property long loadingIndex;
+@property int loadingRetryTimes;
+
+@property NSString *nextURL;
+@property int nextRetryTimes;
 
 -(void)playFromAlbumVC:(AlbumData*)ad Index:(long)index;
 -(void)playFromAlbumVC:(AlbumData*)ad Index:(long)index FromBegain:(BOOL)isFromeBegain;
@@ -39,6 +43,13 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)resume;
 -(void)nextSong;
 -(void)prevSong;
+
+//delegate function
+-(void)getUrlRetry:(NSUInteger)n;
+-(void)getUrlOver:(NSUInteger)n;
+-(void)getUrlSuccess:(NSUInteger)n URL:(NSString*)url;
+
+-(BOOL)canNext;
 
 @end
 

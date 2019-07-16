@@ -173,7 +173,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="v3X-0G-blM"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="4"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="8"/>
                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -200,6 +200,20 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="下一首URL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X3a-Gi-R5p">
+                                <rect key="frame" x="20" y="88" width="370" height="21"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="5"/>
+                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="highlightedColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="下一首状态" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yXS-QB-q4I">
+                                <rect key="frame" x="20" y="135" width="374" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="highlightedColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -234,6 +248,8 @@
                     <tabBarItem key="tabBarItem" systemItem="recents" id="pMi-8F-xcb"/>
                     <connections>
                         <outlet property="albumLabel" destination="Zj5-yt-xfH" id="GXJ-G7-sSQ"/>
+                        <outlet property="nextStatusLabel" destination="yXS-QB-q4I" id="CW7-Hs-AhB"/>
+                        <outlet property="nextUrl" destination="X3a-Gi-R5p" id="2vK-ai-p9g"/>
                         <outlet property="playButton" destination="5WB-rj-CMe" id="ogr-FQ-8GG"/>
                         <outlet property="scheduleLabel" destination="I1H-oe-pOq" id="06Z-nu-s27"/>
                         <outlet property="slider" destination="9Su-yi-VVE" id="Eyq-Vs-seN"/>
@@ -247,10 +263,10 @@
             </objects>
             <point key="canvasLocation" x="1521.7391304347827" y="14.732142857142856"/>
         </scene>
-        <!--PlayListVC-->
+        <!--FavoritesVC-->
         <scene sceneID="yzk-kr-Lie">
             <objects>
-                <viewController id="oEG-4j-lcj" userLabel="PlayListVC" customClass="FavoritesVC" sceneMemberID="viewController">
+                <viewController id="oEG-4j-lcj" customClass="FavoritesVC" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YCI-OK-FoS">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -259,7 +275,7 @@
                                 <rect key="frame" x="0.0" y="435" width="414" height="378"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SearchCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchCell" rowHeight="130" id="KAt-ZA-nOE" customClass="SearchCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="FavoritesCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FavoritesCell" rowHeight="130" id="KAt-ZA-nOE" userLabel="FavoritesCell" customClass="FavoritesCell">
                                         <rect key="frame" x="0.0" y="28" width="414" height="130"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KAt-ZA-nOE" id="15D-3o-B4A">
@@ -287,7 +303,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="预留：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cp9-a9-V6Q">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="来源：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cp9-a9-V6Q" userLabel="Source Label">
                                                     <rect key="frame" x="20" y="98" width="374" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -297,9 +313,10 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="authorLabel" destination="1d4-oc-3n3" id="SkZ-7e-1wB"/>
-                                            <outlet property="nameLabel" destination="b7c-gE-AFg" id="BE0-QP-dPN"/>
-                                            <outlet property="soundLabel" destination="X34-ax-YDS" id="TDF-zC-8mF"/>
+                                            <outlet property="authorLabel" destination="1d4-oc-3n3" id="wgD-UW-QqT"/>
+                                            <outlet property="modLabel" destination="Cp9-a9-V6Q" id="o8l-iP-X8O"/>
+                                            <outlet property="nameLabel" destination="b7c-gE-AFg" id="DZb-3L-A8m"/>
+                                            <outlet property="soundLabel" destination="X34-ax-YDS" id="nk7-TH-maQ"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

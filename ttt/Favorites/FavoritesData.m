@@ -66,5 +66,49 @@
     [self.delegateArray removeObject:delegate];
 }
 
+-(void)setCurrentIndexForAlbumUrl:(NSString*)url index:(int)index{
+    for (NSDictionary *d in self.data) {
+        if ([[d objectForKey:@"url"] isEqualToString:url]){
+            int oldIndex = [[d objectForKey:@"currentIndex"]intValue];
+            if (oldIndex != index){
+                NSMutableDictionary *md = [[NSMutableDictionary alloc]initWithDictionary:d];
+                [md setObject:[NSNumber numberWithInteger:index] forKey:@"currentIndex"];
+                [self.data replaceObjectAtIndex:[self.data indexOfObject:d] withObject:md];
+                [self save];
+                for (id<FavoritesDataDelegate> delegate in self.delegateArray) {
+                    [delegate didFavoritesDataChanged];
+                }
+            }
+            break;
+        }
+    }
+}
+-(int)getCurrentIndexForAlbumUrl:(NSString*)url{
+    //TODO:
+    return 0;
+}
+
+-(void)setTotalCountForAlbumUrl:(NSString*)url count:(NSUInteger)count{
+    for (NSDictionary *d in self.data) {
+        if ([[d objectForKey:@"url"] isEqualToString:url]){
+            NSUInteger oldCount = [[d objectForKey:@"totalCount"]unsignedIntegerValue];
+            if (oldCount != count){
+                NSMutableDictionary *md = [[NSMutableDictionary alloc]initWithDictionary:d];
+                [md setObject:[NSNumber numberWithUnsignedInteger:count] forKey:@"totalCount"];
+                [self.data replaceObjectAtIndex:[self.data indexOfObject:d] withObject:md];
+                [self save];
+                for (id<FavoritesDataDelegate> delegate in self.delegateArray) {
+                    [delegate didFavoritesDataChanged];
+                }
+            }
+            break;
+        }
+    }
+}
+-(int)getTotalCountForAlbumUrl:(NSString*)url{
+    //TODO:
+    return 0;
+}
+
 @end
 

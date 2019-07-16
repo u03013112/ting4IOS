@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UISlider *slider;
 
+@property (weak, nonatomic) IBOutlet UILabel *nextUrl;
+@property (weak, nonatomic) IBOutlet UILabel *nextStatusLabel;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -15,6 +15,7 @@
 @property (weak)Player *player;
 @property BOOL isSliding;
 @property (weak, nonatomic) IBOutlet UILabel *scheduleLabel;
+@property NSUInteger n;//AlbumData 重试次数
 
 @property (strong,nonatomic) AlbumData *albumData;
 
@@ -40,6 +41,7 @@
     
     if ([PlayerData getInstance].albumData == nil){
         //    尝试播放上次播放内容
+        self.albumData = nil;
         UsrData *ud = [[AppDelegate getInstance]usrData];
         if (ud.currentAlbumURL != nil && [ud.currentAlbumURL isEqualToString:@""]==NO){
             self.url.text = @"加载中...";
@@ -47,6 +49,8 @@
         }
         
     }
+    self.nextUrl.text = @"";
+    self.nextStatusLabel.text = @"";
 }
 
 - (IBAction)didblackButtonClicked:(id)sender {
@@ -101,14 +105,19 @@
             [self.slider setValue:current];
         }
         self.albumLabel.text = [[PlayerData getInstance] getCurrentAlbumName];
-        self.songLabel.text = [[PlayerData getInstance] getCurrentSongName];
+        self.songLabel.text = [[PlayerData getInstance] getSongName:self.player.currentIndex];
     }
     
     self.url.text = self.player.currentUrl;
     
-    if(self.player.isLoading){
-        self.statusLabel.text=@"正在准备播放";
-    }else if(self.player.isPlaying){
+    if([self.player.currentUrl  isEqual: @""]){
+        self.statusLabel.text = @"正在解析地址";
+        if (self.player.loadingRetryTimes >0){
+            self.nextStatusLabel.text = [NSString stringWithFormat:@"正在解析地址，重试第%d次",self.player.loadingRetryTimes];
+        }
+        self.playButton.enabled = NO;
+    }else{
+        self.playButton.enabled = YES;
         if(self.player.ava>=self.player.total-1){//-1是为了避免误差
             self.statusLabel.text=@"全部缓冲完成";
         }else{
@@ -116,6 +125,30 @@
             self.statusLabel.text=[NSString stringWithFormat:@"缓冲了%02d:%02d",ava/60,ava%60];
         }
     }
+    
+    if (self.albumData == nil){
+        self.statusLabel.text = @"正在获取播放列表";
+        if (self.n >0){
+            self.statusLabel.text = [NSString stringWithFormat:@"正在获取播放列表,重试第%lu次",(unsigned long)self.n ];
+        }
+    }
+    
+    if ([self.player.nextURL  isEqual: @""]){
+        self.nextStatusLabel.text = @"正在解析地址";
+        if (self.player.nextRetryTimes >0){
+            self.nextStatusLabel.text = [NSString stringWithFormat:@"正在解析地址，重试第%d次",self.player.nextRetryTimes];
+        }
+    }else{
+        self.nextUrl.text = self.player.nextURL;
+        if(self.player.ava2>=self.player.total2-1){//-1是为了避免误差
+            self.nextStatusLabel.text=@"全部缓冲完成";
+        }else{
+            int ava2 = (int)self.player.ava2;
+            self.nextStatusLabel.text = [NSString stringWithFormat:@"缓冲了%02d:%02d",ava2/60,ava2%60];
+        }
+    }
+    
+    
     
     if([[[AppDelegate getInstance]player] isPlaying]){
         [[self playButton]setTitle:@"暂停" forState:UIControlStateNormal];
@@ -136,6 +169,10 @@
     ScheduleCV *vc = [sb instantiateViewControllerWithIdentifier:@"ScheduleCV"];
     [self addChildViewController:vc];
     [self.view addSubview:vc.view];
+}
+
+-(void)didRetry{
+    self.n ++ ;
 }
 
 @end

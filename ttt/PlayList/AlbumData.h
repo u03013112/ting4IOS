@@ -27,6 +27,8 @@
 @protocol AlbumDataDelegate<NSObject>
 @required
 -(void)didAlbumDataRecv:(AlbumData*)data;
+@optional
+-(void)didRetry;
 @end
 
 #endif /* PlayListData_h */

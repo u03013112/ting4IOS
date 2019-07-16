@@ -7,11 +7,11 @@
 //
 
 #import "FavoritesVC.h"
-#import "../Search/SearchCell.h"//暂时就用这个吧
 #import "../PlayList/AlbumVC.h"
 #import "../PlayList/AlbumData.h"
 #import "../AppDelegate.h"
 #import "FavoritesData.h"
+#import "FavoritesCell.h"
 
 @interface FavoritesVC ()<UITableViewDataSource,UITableViewDelegate,FavoritesDataDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *lastLabel;
@@ -44,15 +44,22 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 70.0f;
+    return 100.0f;
 }
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    SearchCell *cell = [self.AlbumTV dequeueReusableCellWithIdentifier:@"SearchCell"];
+    FavoritesCell *cell = [self.AlbumTV dequeueReusableCellWithIdentifier:@"FavoritesCell"];
     
     NSDictionary *info = [AppDelegate getInstance].favData.data[indexPath.row];
     cell.nameLabel.text = [info objectForKey:@"title"];
     cell.authorLabel.text = [info objectForKey:@"mod"];
-    cell.soundLabel.text = [info objectForKey:@"sound"];
+    int index = [[info objectForKey:@"currentIndex"]intValue];
+    NSUInteger total = [[info objectForKey:@"totalCount"]unsignedIntegerValue];
+    if (index >0){
+        cell.soundLabel.text = [NSString stringWithFormat:@"上次听到 %d 集， 本专辑共 %lu 集",index,(unsigned long)total];
+    }else{
+        cell.soundLabel.text = @"";
+    }
+    
     return cell;
 }
 

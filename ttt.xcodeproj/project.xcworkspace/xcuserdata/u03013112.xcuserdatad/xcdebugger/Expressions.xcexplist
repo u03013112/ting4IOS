@@ -3,6 +3,9 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "-[FavoritesData addDelegate:]:FavoritesData.m">
+      </ContextState>
+      <ContextState
          contextName = "-[Player play]:Player.m">
       </ContextState>
       <ContextState
@@ -17,10 +20,13 @@
          contextName = "-[AlbumVC setAlbumInfo:]:AlbumVC.m">
       </ContextState>
       <ContextState
-         contextName = "-[UsrData loadUsrData]:UsrData.m">
+         contextName = "-[Player canNext]:Player.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[PlayerVC updatePerSec]:PlayerVC.m">
          <PersistentStrings>
             <PersistentString
-               value = "dict">
+               value = "self.player.currentUrl">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -29,6 +35,14 @@
          <PersistentStrings>
             <PersistentString
                value = "self.parentViewController">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[UsrData loadUsrData]:UsrData.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "dict">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -58,12 +72,29 @@
          contextName = "-[AlbumVC didFavoritButtonClicked:]:AlbumVC.m">
       </ContextState>
       <ContextState
+         contextName = "-[FavoritesData delFav:]:FavoritesData.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[PlayerData getCurrentSongName]:PlayerData.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[[[AppDelegate getInstance]usrData] currentAlbumURL]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[FavoritesVC tableView:numberOfRowsInSection:]:FavoritesVC.m">
          <PersistentStrings>
+            <PersistentString
+               value = "[[AppDelegate getInstance].favData.data count]">
+            </PersistentString>
             <PersistentString
                value = "[AppDelegate getInstance].usrData.albumFavorites">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[FavoritesVC tableView:cellForRowAtIndexPath:]:FavoritesVC.m">
       </ContextState>
       <ContextState
          contextName = "-[UsrData saveUsrData]:UsrData.m">

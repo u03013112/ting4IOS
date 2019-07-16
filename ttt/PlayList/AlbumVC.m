@@ -33,7 +33,7 @@
 
 @implementation AlbumVC
 -(void)didAlbumDataRecv:(AlbumData*)data{
-    NSLog(@"%@",data.sounds[0]);
+//    NSLog(@"%@",data.sounds[0]);
     self.albumData = data;
     [self.songArrayTV reloadData];
     [self.songArrayTV setContentOffset:CGPointMake(0, 44*[[[[AppDelegate getInstance].usrData getAlbumConfig:self.url]objectForKey:@"currentSongIndex"]intValue])];
@@ -45,6 +45,8 @@
     for (NSDictionary *album in [AppDelegate getInstance].favData.data) {
         if([album objectForKey:@"url"] == self.url){
             [[self favButton]setTitle:@"取消收藏" forState:UIControlStateNormal];
+            [[AppDelegate getInstance].favData setTotalCountForAlbumUrl:self.url count:[[[self albumData]sounds]count]];
+            [[AppDelegate getInstance].favData setCurrentIndexForAlbumUrl:self.url index:[[[[AppDelegate getInstance].usrData getAlbumConfig:self.url]objectForKey:@"currentSongIndex"]intValue]+1];
             break;
         }
     }

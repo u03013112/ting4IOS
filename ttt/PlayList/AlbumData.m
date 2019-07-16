@@ -13,6 +13,7 @@
 
 +(void) getAlbumInfoByURL:(NSString *)urlIN mod:(NSString *)mod delegate:(id<AlbumDataDelegate>)delegate{
     if(urlIN == nil  || mod ==nil || [urlIN  isEqual: @""] || [mod  isEqual: @""] ){
+        NSLog(@"arg err");
         return;
     }
     
@@ -35,6 +36,12 @@
             NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
             if(![[dict objectForKey:@"error"] isEqual:@""]){
                 NSLog(@"timeout");
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self getAlbumInfoByURL:urlIN mod:mod delegate:delegate];
+                    if ([delegate respondsToSelector:@selector(didRetry)]){
+                        [delegate didRetry];
+                    }
+                });
                 return ;
             }
             albumInfo.url = urlIN;
@@ -51,6 +58,14 @@
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [delegate didAlbumDataRecv:albumInfo];
+            });
+        }else{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                sleep(1);
+                [self getAlbumInfoByURL:urlIN mod:mod delegate:delegate];
+                if ([delegate respondsToSelector:@selector(didRetry)]){
+                    [delegate didRetry];
+                }
             });
         }
     }];
